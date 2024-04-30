@@ -1,15 +1,98 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Note App</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js" integrity="sha256-/PJBs6QWvXijOFIX04kZpLb6ZtSQckdOIavLWKKOgXU=" crossorigin="anonymous" defer></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js" integrity="sha256-/PJBs6QWvXijOFIX04kZpLb6ZtSQckdOIavLWKKOgXU=" crossorigin="anonymous" defer></script> -->
+  <script src="./ext-modules/handlebars.min.js" defer></script>
   <script src="scripts/index.js" type="module"></script>
-
-  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/index.css" />
 </head>
+
 <body>
-<h1>Note App</h1>
+
+<!-- Main page with render slots for Handlebars -->
+<div class="container">
+  <div id="view-list">
+    <todo-nav></todo-nav>
+    <todo-list></todo-list>
+    <dialog id="spinner">
+      <div class="spinner"></div>
+      <div class="dialog-text">Loading data...</div>
+    </dialog>
+  </div>
+  <div id="view-form" class="hidden">
+    <todo-form></todo-form>
+  </div>
+</div>
+
+<!-- --------------------------------------------------- -->
+<!--                 HANDLEBARS TEMPLATES                 -->
+<!-- --------------------------------------------------- -->
+
+<!-- Nav bar template for Handlebars, will be rendered in <todo-nav> -->
+<script id="nav-template" type="text/x-handlebars-template">
+  <nav class="navbar">
+    <button id="NewTask" class="btn">New Task</button>
+    <button id="ToggleMode" class="btn align-right">Toggle Mode</button>
+  </nav>
+  <nav class="toolbar">
+    <button id="SortByName" class="btn-toolbar">By Name{{{sortBy 'name'}}}</button>
+    <button id="SortByDueDate" class="btn-toolbar">By Due Date{{{sortBy 'dueDate'}}}</button>
+    <button id="SortByCreationDate" class="btn-toolbar">By Creation Date{{{sortBy 'createdDate'}}}</button>
+    <button id="SortByImportance" class="btn-toolbar">By Importance{{{sortBy 'importance'}}}</button>
+    <button id="FilterOpen" class={{{getClass "btn-toolbar align-right" filterOpen}}} >Filter Open</button>
+  </nav>
+</script>
+
+
+<!-- List template for Handlebars, will be rendered in <todo-list> -->
+<script id="list-template" type="text/x-handlebars-template">
+  {{#if this.length}}
+    <ul>
+      {{#each this}}
+        <li>
+          <div class="li-container">
+            <div class="grid-date">{{formatDate dueDate}}</div>
+            <div class="grid-name">{{name}}</div>
+            <div class="grid-importance">{{{formatImportance importance}}}</div>
+            <div class="grid-status">
+              <input type="checkbox" class="disabled" {{#if completed}}checked{{/if}}>
+              <label>completed</label>
+            </div>
+            <div class="grid-description">{{description}}</div>
+            <div class="grid-edit">
+              <button class="btn" data-id="{{id}}">Edit</button>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <div class="no-list">No items to show!</div>
+  {{/if}}
+</script>
+
+
+<!-- Form template for Handlebars, will be rendered in <todo-form> -->
+<script id="form-template" type="text/x-handlebars-template">
+
+  <h2>Add new task</h2>
+  <form>
+    <label>Name</label>
+    <input name="name" value="{{name}}">
+    <label>Description</label>
+    <textarea name="description">{{description}}</textarea>
+
+    <nav>
+      <button class="cancel">Cancel</button>
+      <button class="Ok">Cancel</button>
+    </nav>
+
+  </form>
+</script>
+
 
 </body>
 </html>
+
