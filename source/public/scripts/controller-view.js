@@ -28,16 +28,16 @@ function addNavToolbarListeners() {
     document.querySelector('#NewTask').addEventListener('click', showAddEditForm);
     document.querySelector('#ToggleMode').addEventListener('click', onToggleTheme);
     document.querySelector('#SortByName').addEventListener('click', () => {
-        onSortFilter({sortBy: 'name', descending: false});
+        onSortFilter({sortBy: 'name', sortDescending: false});
     })
     document.querySelector('#SortByDueDate').addEventListener('click', () => {
-        onSortFilter({sortBy: 'dueDate', descending: false});
+        onSortFilter({sortBy: 'dueDate', sortDescending: false});
     })
     document.querySelector('#SortByCreationDate').addEventListener('click', () => {
-        onSortFilter({sortBy: 'createdDate', descending: false});
+        onSortFilter({sortBy: 'createdDate', sortDescending: false});
     })
     document.querySelector('#SortByImportance').addEventListener('click', () => {
-        onSortFilter({sortBy: 'importance', descending: true});
+        onSortFilter({sortBy: 'importance', sortDescending: true});
     })
     document.querySelector('#FilterOpen').addEventListener('click', () => {
         onSortFilter({filterOpen: !displayOptions.filterOpen});
@@ -74,14 +74,14 @@ Handlebars.registerHelper('sortBy', (by) => {
 Handlebars.registerHelper('formatImportance', p => '&#10045;'.repeat(+p));
 
 function renderList(data) {
-    document.querySelector('todo-nav').innerHTML = navTemplateCompiled(displayOptions);
-    document.querySelector('todo-list').innerHTML = listTemplateCompiled(data);
+    document.querySelector('.todo-nav').innerHTML = navTemplateCompiled(displayOptions);
+    document.querySelector('.todo-list').innerHTML = listTemplateCompiled(data);
     addNavToolbarListeners();
     addListListeners();
 }
 
 function renderForm(data) {
-    document.querySelector('todo-form').innerHTML = formTemplateCompiled(data);
+    document.querySelector('.todo-form').innerHTML = formTemplateCompiled(data);
     addFormListeners();
 }
 
@@ -112,10 +112,15 @@ function showAddEditForm(id) {
     renderForm(data);
 }
 
-function onToggleTheme(ev){
-    if (ev) { displayOptions.theme = (displayOptions.theme === 'light') ? 'dark' : 'light' }
+function onToggleTheme(ev) {
+    if (ev) {
+        displayOptions.theme = (displayOptions.theme === 'light') ? 'dark' : 'light'
+    }
     document.documentElement.setAttribute('data-theme', displayOptions.theme);
-    try { localStorage.setItem('theme', displayOptions.theme) } catch(err) {console.log('err-theme')}
+    try {
+        localStorage.setItem('theme', displayOptions.theme)
+    } catch (err) {/* ignore */}
+
 }
 
 export { initializeView }
