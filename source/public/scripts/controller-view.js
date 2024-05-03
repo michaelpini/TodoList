@@ -4,10 +4,6 @@ import DataService from "../services/data-service.js";
 import ServerService from "../services/server-service.js";
 import TodoItem from "./model.js";
 
-let navTemplateCompiled = null;
-let listTemplateCompiled = null;
-let formTemplateCompiled = null;
-
 const displayOptions = {
     show: 'list',
     sortBy: 'name',
@@ -16,53 +12,14 @@ const displayOptions = {
     theme: 'light',
 }
 
-/* *********** CONTROLLER ************* */
-
-function onSortFilter(param) {
-    if (param) Object.assign(displayOptions, param);
-    const data = DataService.getList(displayOptions);
-    renderList(data)
-}
-
-function addNavToolbarListeners() {
-    document.querySelector('#NewTask').addEventListener('click', showAddEditForm);
-    document.querySelector('#ToggleMode').addEventListener('click', onToggleTheme);
-    document.querySelector('#SortByName').addEventListener('click', () => {
-        onSortFilter({sortBy: 'name', sortDescending: false});
-    })
-    document.querySelector('#SortByDueDate').addEventListener('click', () => {
-        onSortFilter({sortBy: 'dueDate', sortDescending: false});
-    })
-    document.querySelector('#SortByCreationDate').addEventListener('click', () => {
-        onSortFilter({sortBy: 'createdDate', sortDescending: false});
-    })
-    document.querySelector('#SortByImportance').addEventListener('click', () => {
-        onSortFilter({sortBy: 'importance', sortDescending: true});
-    })
-    document.querySelector('#FilterOpen').addEventListener('click', () => {
-        onSortFilter({filterOpen: !displayOptions.filterOpen});
-    })
-}
-
-function addListListeners() {
-    const editButtons = document.querySelectorAll('button[data-id]');
-    for (let i = 0; i < editButtons.length; i++) {
-        editButtons[i].addEventListener('click', ev => {
-            const {id} = ev.target.dataset;
-            showAddEditForm(id);
-        })
-    }
-}
-
-function addFormListeners() {
-
-}
-
 
 
 /* *********** VIEW ************* */
+let navTemplateCompiled = null;
+let listTemplateCompiled = null;
+let formTemplateCompiled = null;
 Handlebars.registerHelper('formatDate', str => DateTime.fromISO(str).toRelativeCalendar());
-Handlebars.registerHelper('getClass', (baseClass, isActive) => `"${baseClass}${isActive ? ' active' : ''}"`);
+Handlebars.registerHelper('getClass', (baseClass, isActive) => `"${baseClass}${isActive ? ' btn-active' : ''}"`);
 Handlebars.registerHelper('sortBy', (by) => {
     if (displayOptions.sortBy === by ) {
         return `&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
@@ -122,6 +79,50 @@ function onToggleTheme(ev) {
     } catch (err) {/* ignore */}
 
 }
+
+
+/* *********** CONTROLLER ************* */
+
+function onSortFilter(param) {
+    if (param) Object.assign(displayOptions, param);
+    const data = DataService.getList(displayOptions);
+    renderList(data)
+}
+
+function addNavToolbarListeners() {
+    document.querySelector('#NewTask').addEventListener('click', showAddEditForm);
+    document.querySelector('#ToggleMode').addEventListener('click', onToggleTheme);
+    document.querySelector('#SortByName').addEventListener('click', () => {
+        onSortFilter({sortBy: 'name', sortDescending: false});
+    })
+    document.querySelector('#SortByDueDate').addEventListener('click', () => {
+        onSortFilter({sortBy: 'dueDate', sortDescending: false});
+    })
+    document.querySelector('#SortByCreationDate').addEventListener('click', () => {
+        onSortFilter({sortBy: 'createdDate', sortDescending: false});
+    })
+    document.querySelector('#SortByImportance').addEventListener('click', () => {
+        onSortFilter({sortBy: 'importance', sortDescending: true});
+    })
+    document.querySelector('#FilterOpen').addEventListener('click', () => {
+        onSortFilter({filterOpen: !displayOptions.filterOpen});
+    })
+}
+
+function addListListeners() {
+    const editButtons = document.querySelectorAll('button[data-id]');
+    for (let i = 0; i < editButtons.length; i++) {
+        editButtons[i].addEventListener('click', ev => {
+            const {id} = ev.target.dataset;
+            showAddEditForm(id);
+        })
+    }
+}
+
+function addFormListeners() {
+
+}
+
 
 export { initializeView }
 

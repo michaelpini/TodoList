@@ -2,11 +2,17 @@ import { DateTime } from "../ext-modules/luxon.js";
 
 class TodoItem {
     name = '';
+
     description = '';
-    importance = 1;
+
+    importance = 3;
+
     completed = false;
+
     dueDate;
+
     createdDate;
+
     id = '';
     
     constructor(

@@ -20,7 +20,7 @@
         <main class="todo-list"></main>
         <dialog id="spinner">
             <div class="spinner"></div>
-            <div class="dialog-text">Loading data...</div>
+            <div class="spinner-text">Loading data...</div>
         </dialog>
     </div>
     <div id="view-form" class="hidden">
@@ -35,8 +35,8 @@
 <!-- Nav bar template for Handlebars, will be rendered in <div .todo-nav> -->
 <script id="nav-template" type="text/x-handlebars-template">
     <nav class="navbar">
-        <button id="NewTask" class="btn">New Task</button>
-        <button id="ToggleMode" class="btn align-right">Toggle Mode</button>
+        <button id="NewTask" class="btn-action">New Task</button>
+        <button id="ToggleMode" class="btn-action align-right">Toggle Mode</button>
     </nav>
     <nav class="toolbar">
         <button id="SortByName" class="btn-toolbar">By Name{{{sortBy 'name'}}}</button>
@@ -60,11 +60,11 @@
                         <div class="grid-importance">{{{formatImportance importance}}}</div>
                         <div class="grid-status">
                             <input type="checkbox" class="disabled" {{#if completed}}checked{{/if}}>
-                            <label>completed</label>
+                            <label>done</label>
                         </div>
                         <div class="grid-description">{{description}}</div>
                         <div class="grid-edit">
-                            <button class="btn" data-id="{{id}}">Edit</button>
+                            <button class="btn-action" data-id="{{id}}">Edit</button>
                         </div>
                     </div>
                 </li>
@@ -76,18 +76,34 @@
 </script>
 
 
-<!-- Form template for Handlebars, will be rendered in <todo-form> -->
+<!-- Form template for Handlebars, will be rendered in <div .todo-form> -->
 <script id="form-template" type="text/x-handlebars-template">
     <h2>Add new task</h2>
     <form>
-        <label>Name</label>
-        <input name="name" value="{{name}}">
+        <div class="flex col mb-1">
+            <label>Name</label>
+            <input name="name" value="{{name}}" class="w-100">
+        </div>
+        <div class="flex row mb-1 w-100">
+            <div class="flex col">
+                <label>Due Date</label>
+                <input type="date" value="{{dueDate}}"/>
+            </div>
+            <div class="flex col center mb-1">
+                <label>Importance</label>
+                <input type="range" min="1" max="5" step="1" value="{{importance}}"/>
+            </div>
+            <div class="flex col mb-1">
+                <label>Done</label>
+                <input type="checkbox" value="{{completed}}"/>
+            </div>
+        </div>
         <label>Description</label>
-        <textarea name="description">{{description}}</textarea>
+        <textarea name="description" rows="5" class="mb-1">{{description}}</textarea>
 
-        <nav>
-            <button class="cancel">Cancel</button>
-            <button class="Ok">Cancel</button>
+        <nav class="flex">
+            <button class="btn-action align-right">Save</button>
+            <button class="btn-toolbar">Cancel</button>
         </nav>
 
     </form>

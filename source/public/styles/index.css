@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: system-ui;
 }
 
 :root {
@@ -31,24 +31,12 @@ body {
     background-color: var(--background-color);
 }
 
-.todo-nav {
-    position: sticky;
-    top: 8px;
-    background: var(--background-color);
-}
-
-ul {
-    padding: 0;
-}
-
-li {
-    list-style: none;
-}
-
 button {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 2rem;
+    min-width: 3rem;
     background: var(--btn-background);
     color: var(--btn-color);
     border-radius: 3px;
@@ -68,24 +56,29 @@ dialog {
     color: var(--text-color);
 }
 
-.dialog-text {
-    background: var(--background-color);
-    padding: 0.8rem;
-    border-radius: 2rem;
-    font-weight: bold;
-    color: var(--text-color);
-}
-
 dialog::backdrop {
     background: linear-gradient(hsl(0deg 0% 10% / 20%), hsl(0deg 0% 90% / 20%));
 }
 
-.btn:hover {
-    filter: brightness(1.3);
+form {
+    display: flex;
+    flex-direction: column;
 }
 
-button.active {
-    outline: 2px solid var(--toolbar-btn-color);
+input {
+    font-size: inherit;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+}
+
+textarea {
+    font-size: inherit;
 }
 
 [type="checkbox"] {
@@ -96,6 +89,14 @@ button.active {
 
 [type="checkbox"] + label {
     vertical-align: top;
+}
+
+.btn-action:hover {
+    filter: brightness(1.3);
+}
+
+.btn-active {
+    outline: 2px solid var(--toolbar-btn-color);
 }
 
 .btn-toolbar {
@@ -112,14 +113,10 @@ button.active {
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 31rem;
+    max-width: 50rem;
     height: calc(100vh - 16px);
-}
-
-.center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    margin: 0 auto;
 }
 
 .navbar,
@@ -131,18 +128,6 @@ button.active {
 
 .toolbar {
     border-bottom: 1px solid var(--line-color);
-}
-
-.li-container {
-    display: grid;
-    grid-template:
-        "date title importance edit"
-        "status descr descr edit" / 10rem 1fr 5rem auto;
-    gap: 1rem;
-    border-bottom: 1px solid;
-    border-bottom-color: var(--line-color);
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
 }
 
 .grid-name {
@@ -157,20 +142,19 @@ button.active {
 
 .grid-edit {
     grid-area: edit;
-    align-content: center;
-    margin-left: auto;
+    margin: auto;
 }
 
-.align-right {
-    margin-left: auto !important;
-}
-
-.disabled {
-    pointer-events: none;
-}
-
-.hidden {
-    display: none !important;
+.li-container {
+    display: grid;
+    grid-template:
+        "date title importance edit"
+        "status descr descr edit" / minmax(6rem, 20%) 1fr 5rem auto;
+    gap: 1rem;
+    border-bottom: 1px solid;
+    border-bottom-color: var(--line-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .no-list {
@@ -188,11 +172,64 @@ button.active {
     border-top: 8px solid var(--chkbox-color);
     width: var(--size);
     height: var(--size);
-    animation: spin 3s linear infinite;
+    animation: spinner 3s linear infinite;
     margin: 1rem;
 }
 
-@keyframes spin {
+@keyframes spinner {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.spinner-text {
+    background: var(--background-color);
+    padding: 0.8rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.todo-nav {
+    position: sticky;
+    top: 0;
+    background: var(--background-color);
+    padding-top: 8px;
+}
+
+.align-right {
+    margin-left: auto !important;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.col {
+    flex-direction: column;
+}
+
+.mb-1 {
+    margin-bottom: 0.8rem;
+}
+
+.row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
 }
