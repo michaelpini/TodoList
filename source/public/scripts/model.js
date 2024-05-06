@@ -23,12 +23,12 @@ class TodoItem {
         completed,
         id
     ) {
-        const now = DateTime.now().toISO();
+        const now = DateTime.now().toISODate();
         const due = DateTime.fromISO(dueDate);
         this.name = name || '';
         this.description = description || '';
-        this.dueDate = due.isValid ? due.toISO() : now;
-        this.importance = importance || 3;
+        this.dueDate = due.isValid ? due.toISODate() : now;
+        this.importance = +importance || 3;
         this.completed = completed;
         this.id = id || '';
         this.createdDate = now;

@@ -15,47 +15,75 @@
 
 <!-- Main page with render slots for Handlebars -->
 <div class="container">
+
+    <!-- list -->
     <div id="view-list">
-        <div class="todo-nav"></div>
-        <main class="todo-list"></main>
-        <dialog id="spinner">
-            <div class="spinner"></div>
-            <div class="spinner-text">Loading data...</div>
-        </dialog>
+        <div class="todo-nav">
+            <nav class="navbar">
+                <button id="NewTask" class="btn-action">New Task</button>
+                <button id="ToggleMode" class="btn-action align-right">Toggle Mode</button>
+            </nav>
+            <nav id="toolbar-parent" class="toolbar">
+                <!-- HANDLEBARS Toolbar Slot -->
+            </nav>
+        </div>
+        <main id="list-parent" class="todo-list">
+            <!-- HANDLEBARS List Slot-->
+        </main>
     </div>
+
+    <!-- form -->
     <div id="view-form" class="hidden">
-        <div class="todo-form"></div>
+        <div class="todo-form">
+            <form id="form-parent">
+                <!-- HANDLEBARS Form Inputs Slot -->
+            </form>
+            <nav class="flex">
+                <button name="btnSave" class="btn-action align-right">Save</button>
+                <button name="btnCancel" class="btn-toolbar">Cancel</button>
+            </nav>
+        </div>
     </div>
+
+    <!-- spinner -->
+    <dialog id="spinner">
+        <div class="spinner"></div>
+        <div class="spinner-text">Loading data...</div>
+    </dialog>
 </div>
 
 <!-- --------------------------------------------------- -->
 <!--                 HANDLEBARS TEMPLATES                 -->
 <!-- --------------------------------------------------- -->
 
-<!-- Nav bar template for Handlebars, will be rendered in <div .todo-nav> -->
+<!-- Nav bar template for Handlebars, will be rendered in id="toolbar-parent" -->
 <script id="nav-template" type="text/x-handlebars-template">
-    <nav class="navbar">
-        <button id="NewTask" class="btn-action">New Task</button>
-        <button id="ToggleMode" class="btn-action align-right">Toggle Mode</button>
-    </nav>
-    <nav class="toolbar">
-        <button id="SortByName" class="btn-toolbar">By Name{{{sortBy 'name'}}}</button>
-        <button id="SortByDueDate" class="btn-toolbar">By Due Date{{{sortBy 'dueDate'}}}</button>
-        <button id="SortByCreationDate" class="btn-toolbar">By Creation Date{{{sortBy 'createdDate'}}}</button>
-        <button id="SortByImportance" class="btn-toolbar">By Importance{{{sortBy 'importance'}}}</button>
-        <button id="FilterOpen" class={{{getClass "btn-toolbar align-right" filterOpen}}} >Filter Open</button>
-    </nav>
+    <button class="btn-toolbar" data-sort-by="name">
+        By Name{{{sortBy 'name'}}}
+    </button>
+    <button class="btn-toolbar" data-sort-by="dueDate">
+        By Due Date{{{sortBy 'dueDate'}}}
+    </button>
+    <button class="btn-toolbar" data-sort-by="createdDate">
+        By Creation Date{{{sortBy 'createdDate'}}}
+    </button>
+    <button class="btn-toolbar" data-sort-by="importance" data-sort-descending="true">
+        By Importance{{{sortBy 'importance'}}}
+    </button>
+    <button class="{{getClass "btn-toolbar align-right" filterOpen}}" data-filter-open="toggle">
+        Filter Open
+    </button>
 </script>
 
 
-<!-- List template for Handlebars, will be rendered in <div .todo-list> -->
+<!-- List template for Handlebars, will be rendered in id="list-parent" -->
 <script id="list-template" type="text/x-handlebars-template">
     {{#if this.length}}
         <ul>
             {{#each this}}
                 <li>
                     <div class="li-container">
-                        <div class="grid-date">{{formatDate dueDate}}</div>
+                        <div class="grid-date" title="{{dueDate}}">{{formatDate dueDate}}</div>
                         <div class="grid-name">{{name}}</div>
                         <div class="grid-importance">{{{formatImportance importance}}}</div>
                         <div class="grid-status">
@@ -76,37 +104,38 @@
 </script>
 
 
-<!-- Form template for Handlebars, will be rendered in <div .todo-form> -->
+<!-- Form template for Handlebars, will be rendered in id="form-parent" -->
 <script id="form-template" type="text/x-handlebars-template">
-    <h2>Add new task</h2>
-    <form>
+    <h2>{{#if id}}Edit task{{else}}Add new task{{/if}}</h2>
+    <div class="flex col mb-1">
+        <label>Name</label>
+        <input name="name" value="{{name}}" class="w-100" required />
+    </div>
+    <div class="flex row mb-1 w-100">
+        <div class="flex col">
+            <label>Due Date</label>
+            <input name="dueDate" type="date" value="{{dueDate}}" required />
+        </div>
+        <div class="flex col center mb-1">
+            <label>Importance</label>
+            <input name="importance" type="range" min="1" max="5" step="1" list="markers" value="{{importance}}"/>
+            <datalist id="markers">
+                <option value="1" label="1"></option>
+                <option value="2" label="2"></option>
+                <option value="3" label="3"></option>
+                <option value="4" label="4"></option>
+                <option value="5" label="5"></option>
+            </datalist>
+        </div>
         <div class="flex col mb-1">
-            <label>Name</label>
-            <input name="name" value="{{name}}" class="w-100">
+            <label>Done</label>
+            <input name="completed" type="checkbox" {{addAttribute 'checked' completed}}/>
         </div>
-        <div class="flex row mb-1 w-100">
-            <div class="flex col">
-                <label>Due Date</label>
-                <input type="date" value="{{dueDate}}"/>
-            </div>
-            <div class="flex col center mb-1">
-                <label>Importance</label>
-                <input type="range" min="1" max="5" step="1" value="{{importance}}"/>
-            </div>
-            <div class="flex col mb-1">
-                <label>Done</label>
-                <input type="checkbox" value="{{completed}}"/>
-            </div>
-        </div>
+    </div>
+    <div class="flex col mb-1">
         <label>Description</label>
-        <textarea name="description" rows="5" class="mb-1">{{description}}</textarea>
-
-        <nav class="flex">
-            <button class="btn-action align-right">Save</button>
-            <button class="btn-toolbar">Cancel</button>
-        </nav>
-
-    </form>
+        <textarea name="description" rows="10" class="mb-1" required>{{description}}</textarea>
+    </div>
 </script>
 
 </body>
