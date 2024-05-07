@@ -1,5 +1,5 @@
-| CAS FEE Project 1 | Michael Pini | May 2024 |
-|-------------------|----------------------|----------|  
+| CAS FEE Project 1    | Michael Pini     | May 2024     |
+|----------------------|------------------|--------------|  
 ```
 External libraries:
 - handlebars.js  (templating engine)
@@ -28,12 +28,12 @@ The list contains simple todo items with a few properties:
 The list can be sorted by 4 buttons.  
 👉 Press button twice to toggle sort order
 
-| Sort                 | initial sort order            |
-|----------------------|-------------------------------|
-| ``By Name``          | ascending (A...Z)             |
-| ``By Due Date``      | ascending (oldest first)      |
-| ``By Creation Date`` | ascending (oldest first)      |
-| ``By Importance``    | descending (highest first)    |
+| Sort                    | initial sort order            |
+|-------------------------|-------------------------------|
+| ``By Name``             | ascending (A...Z)             |
+| ``By Due Date``         | ascending (oldest first)      |
+| ``By Creation Date``    | ascending (oldest first)      |
+| ``By Importance``       | descending (highest first)    |
 
 ### Filter:  
 Press ``Filter Open`` to show only open items. 👉 Press again to show all.
@@ -50,15 +50,11 @@ For new items the due date will be set to the current day, importance to 3.
 To save an item, Name, Due Date and Description are required.  
 Cancel will warn the user if changes would be lost.
 
-| Field            | Initial value | Validation |
-|------------------|--------------|------------|
-| ``Name``         |              | required   |
-| ``Due Date``     | today's date | required   |
-| ``Importance``   | 3            |            |
-| ``Done``         | false        |            |
-| ``Description``  |              | required   |
-
-
-
-
+| Field                | Initial value       | Validation      |
+|----------------------|---------------------|-----------------|
+| ``Name``             |                     | required        |
+| ``Due Date``         | today's date        | required        |
+| ``Importance``       | 3                   |                 |
+| ``Done``             | false               |                 |
+| ``Description``      |                     | required        |
 

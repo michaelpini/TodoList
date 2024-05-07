@@ -23,7 +23,7 @@ function sortFilter() {
 
 function navBarHandler(ev) {
     if (ev.target.id === 'NewTask') showAddEditForm();
-    if (ev.target.id === 'ToggleMode') setTheme('toggle');
+    if (ev.target.id === 'ToggleMode') setTheme(displayOptions, 'toggle');
 }
 
 function toolbarHandler(ev) {
