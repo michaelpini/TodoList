@@ -1,4 +1,4 @@
-import TodoItem from "../scripts/model.js";
+import TodoItem from "../scripts/todo-item.model.js";
 
 const rappi = 
 `Rapperswil Castle (Swiss German: Schloss Rapperswil) is a castle, built in the early 13th century by the House of Rapperswil, in the formerly independent city of Rapperswil.

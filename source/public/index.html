@@ -58,16 +58,16 @@
 
 <!-- Nav bar template for Handlebars, will be rendered in id="toolbar-parent" -->
 <script id="nav-template" type="text/x-handlebars-template">
-    <button class="btn-toolbar" data-sort-by="name">
+    <button class="btn-toolbar" data-sort-by="name" data-sort-mode="asc">
         By Name{{{sortBy 'name'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="dueDate">
+    <button class="btn-toolbar" data-sort-by="dueDate" data-sort-mode="asc">
         By Due Date{{{sortBy 'dueDate'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="createdDate">
+    <button class="btn-toolbar" data-sort-by="createdDate" data-sort-mode="asc">
         By Creation Date{{{sortBy 'createdDate'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="importance" data-sort-descending="true">
+    <button class="btn-toolbar" data-sort-by="importance" data-sort-mode="desc">
         By Importance{{{sortBy 'importance'}}}
     </button>
     <button class="{{getClass "btn-toolbar align-right" filterOpen}}" data-filter-open="toggle">
