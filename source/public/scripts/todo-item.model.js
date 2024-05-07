@@ -29,7 +29,7 @@ class TodoItem {
         this.description = description || '';
         this.dueDate = due.isValid ? due.toISODate() : now;
         this.importance = +importance || 3;
-        this.completed = completed;
+        this.completed = completed || false;
         this.id = id || '';
         this.createdDate = now;
   }
