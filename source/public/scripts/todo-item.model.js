@@ -13,7 +13,7 @@ class TodoItem {
 
     createdDate;
 
-    id = '';
+    id = null;
     
     constructor(
         name,
@@ -30,9 +30,13 @@ class TodoItem {
         this.dueDate = due.isValid ? due.toISODate() : now;
         this.importance = +importance || 3;
         this.completed = completed || false;
-        this.id = id || '';
         this.createdDate = now;
-  }
+        if (id) {
+            this.id = id
+        } else {
+            delete this.id
+        }
+    }
 }
 
 export default TodoItem

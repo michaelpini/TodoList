@@ -10,7 +10,7 @@ class DataService {
     }
 
     static getItem(id) {
-        return this.#todoList.find(x => x.id === id);
+        return this.#todoList.find(x => x.id == id);
     }
     
     static addItem(todoItem) {
@@ -23,6 +23,14 @@ class DataService {
             this.#todoList[index] = todoItem;
         }
         return index > -1
+    }
+
+    static deleteItem(id) {
+        const index = this.#todoList.findIndex(x => x.id === id);
+        if (index > -1) {
+            this.#todoList.splice(index, 1);
+        }
+        return index > -1;
     }
 }
 

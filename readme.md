@@ -4,15 +4,16 @@
 External libraries:
 - handlebars.js  (templating engine)
 - luxon.js       (date / time handling)
+- idb.js         (utility for indexed db handling - local storage)
 ```
 ---
 # <mark>Open Items
-- [ ] Delete record ? 
+- [ ] Disable ``delete`` button for new item
 - [ ] Implement server API 
-  - [ ] getList
-  - [ ] getItem
-  - [ ] saveItem
-  - [ ] removeItem ?
+  - [ ] getAll
+  - [ ] getById
+  - [ ] save  (create / update)
+  - [ ] delete
 ---
 
 # A simple Todo List 

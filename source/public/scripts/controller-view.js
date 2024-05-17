@@ -1,7 +1,8 @@
 import DataService from "../services/data.service.js";
-import ServerService from "../services/server.service.js";
+import localDbService from "../services/local-db.service.js";
 import { sortObjectArray } from "../services/util.js";
 import { getFormData, initHandlebars, isDirty, loadIcons, renderList, setTheme, showAddEditForm } from "./view.js";
+import dataService from "../services/data.service.js";
 
 const displayOptions = {
     show: 'list',
@@ -57,7 +58,7 @@ function saveHandler() {
     if (validateForm()) {
         const data = getFormData();
         spinner.showModal();
-        ServerService.saveItem(data)
+        localDbService.save(data)
             .then(response => {
                 if (!DataService.updateItem(response)) DataService.addItem(response);
                 renderList(displayOptions, DataService.getList());
@@ -82,6 +83,19 @@ function cancelHandler() {
     }
 }
 
+function deleteHandler() {
+    const data = getFormData();
+    localDbService.delete(data.id).then(() => {
+        dataService.deleteItem(data.id);
+        renderList(displayOptions, DataService.getList());
+        document.querySelector('#view-form').classList.add('hidden');
+        document.querySelector('#view-list').classList.remove('hidden');
+    })
+        .catch(err => {
+        alert("Error deleting data");
+    })
+}
+
 function addEventListeners() {
     document.querySelector(".navbar").addEventListener('click', navBarHandler);
     document.querySelector("#toolbar-parent").addEventListener('click', toolbarHandler);
@@ -91,11 +105,12 @@ function addEventListeners() {
     })
     document.querySelector('button[name="btnSave"]').addEventListener('click', saveHandler);
     document.querySelector('button[name="btnCancel"]').addEventListener('click', cancelHandler);
+    document.querySelector('button[name="btnDelete"]').addEventListener('click', deleteHandler);
 }
 
 async function loadListData() {
     spinner.showModal();
-    const data = await ServerService.getList();
+    const data = await localDbService.getAll();
     DataService.setList(data);
     renderList(displayOptions, data);
     spinner.close();
