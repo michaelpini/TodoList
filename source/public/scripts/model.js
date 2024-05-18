@@ -1,38 +1,37 @@
-import { DateTime } from "../ext-modules/luxon.js";
+class Data {
+    static #data = [];
 
-class TodoItem {
-    name = '';
+    static getAll() {
+        return [...this.#data];
+    }
 
-    description = '';
+    static setAll(data) {
+        this.#data = data || [];
+    }
 
-    importance = 3;
+    static getById(id) {
+        return this.#data.find(x => String(x.id) === String(id));
+    }
 
-    completed = false;
+    static add(todoItem) {
+        this.#data.push(todoItem);
+    }
 
-    dueDate;
+    static update(todoItem) {
+        const index = this.#data.findIndex(x => String(x.id) === String(todoItem.id));
+        if (index > -1) {
+            this.#data[index] = todoItem;
+        }
+        return index > -1
+    }
 
-    createdDate;
-
-    id = '';
-    
-    constructor(
-        name,
-        description,
-        dueDate,
-        importance,
-        completed,
-        id
-    ) {
-        const now = DateTime.now().toISODate();
-        const due = DateTime.fromISO(dueDate);
-        this.name = name || '';
-        this.description = description || '';
-        this.dueDate = due.isValid ? due.toISODate() : now;
-        this.importance = +importance || 3;
-        this.completed = completed;
-        this.id = id || '';
-        this.createdDate = now;
-  }
+    static delete(id) {
+        const index = this.#data.findIndex(x => String(x.id) === String(id));
+        if (index > -1) {
+            this.#data.splice(index, 1);
+        }
+        return index > -1;
+    }
 }
 
-export default TodoItem
+export default Data

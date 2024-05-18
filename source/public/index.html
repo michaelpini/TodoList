@@ -21,7 +21,7 @@
         <div class="todo-nav">
             <nav class="navbar">
                 <button id="NewTask" class="btn-action">New Task</button>
-                <button id="ToggleMode" class="btn-action align-right">Toggle Mode</button>
+                <button id="ToggleMode" class="btn-action align-right">Toggle Theme</button>
             </nav>
             <nav id="toolbar-parent" class="toolbar">
                 <!-- HANDLEBARS Toolbar Slot -->
@@ -39,6 +39,7 @@
                 <!-- HANDLEBARS Form Inputs Slot -->
             </form>
             <nav class="flex">
+                <button name="btnDelete" class="btn-delete">Delete</button>
                 <button name="btnSave" class="btn-action align-right">Save</button>
                 <button name="btnCancel" class="btn-toolbar">Cancel</button>
             </nav>
@@ -58,19 +59,19 @@
 
 <!-- Nav bar template for Handlebars, will be rendered in id="toolbar-parent" -->
 <script id="nav-template" type="text/x-handlebars-template">
-    <button class="btn-toolbar" data-sort-by="name">
-        By Name{{{sortBy 'name'}}}
+    <button class="btn-toolbar" data-sort-by="name" data-sort-mode="asc">
+        By Name{{{hbSortBy 'name'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="dueDate">
-        By Due Date{{{sortBy 'dueDate'}}}
+    <button class="btn-toolbar" data-sort-by="dueDate" data-sort-mode="asc">
+        By Due Date{{{hbSortBy 'dueDate'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="createdDate">
-        By Creation Date{{{sortBy 'createdDate'}}}
+    <button class="btn-toolbar" data-sort-by="createdDate" data-sort-mode="asc">
+        By Creation Date{{{hbSortBy 'createdDate'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="importance" data-sort-descending="true">
-        By Importance{{{sortBy 'importance'}}}
+    <button class="btn-toolbar" data-sort-by="importance" data-sort-mode="desc">
+        By Importance{{{hbSortBy 'importance'}}}
     </button>
-    <button class="{{getClass "btn-toolbar align-right" filterOpen}}" data-filter-open="toggle">
+    <button class="{{hbGetClass "btn-toolbar align-right" filterOpen}}" data-filter-open="toggle">
         Filter Open
     </button>
 </script>
@@ -83,9 +84,9 @@
             {{#each this}}
                 <li>
                     <div class="li-container">
-                        <div class="grid-date" title="{{dueDate}}">{{formatDate dueDate}}</div>
+                        <div class="grid-date" title="{{dueDate}}">{{hbFormatDate dueDate}}</div>
                         <div class="grid-name">{{name}}</div>
-                        <div class="grid-importance">{{{formatImportance importance}}}</div>
+                        <div class="grid-importance">{{{hbFormatImportance importance}}}</div>
                         <div class="grid-status">
                             <input type="checkbox" class="disabled" {{#if completed}}checked{{/if}}>
                             <label>done</label>
@@ -129,7 +130,7 @@
         </div>
         <div class="flex col mb-1">
             <label>Done</label>
-            <input name="completed" type="checkbox" {{addAttribute 'checked' completed}}/>
+            <input name="completed" type="checkbox" {{hbAddAttribute 'checked' completed}}/>
         </div>
     </div>
     <div class="flex col mb-1">

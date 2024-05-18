@@ -1,34 +1,61 @@
-Die Vorlage beinhaltet CSS/HTML/JS-Linter. Diese sind konfiguriert. 
+| CAS FEE Project 1    | Michael Pini     | May 2024     |
+|----------------------|------------------|--------------|  
+```
+External libraries:
+- handlebars.js  (templating engine)
+- luxon.js       (date / time handling)
+- idb.js         (utility for indexed db handling - local storage)
+```
+---
+# <mark>Open Items
+- [ ] Disable ``delete`` button for new item
+- [ ] Implement server API 
+  - [ ] getAll
+  - [ ] getById
+  - [ ] save  (create / update)
+  - [ ] delete
+---
 
-Getting Started
-1. Entzippen von der Vorlage.
-2. Installieren Sie die Dependencies der Vorlage
-   - Console/Terminal: «npm install» im Root vom Projekt
-3. Testen Sie, ob alles richtig installiert wurde
-   - Console: «npm run all» im Root vom Projekt
-   - Erwarte Ausgabe: 1 Warnungen und «npm run all completed»
-4. Prettier und ESLint in der IDE Konfigurieren
-   - VS Code: 
-      - https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
-	  - https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
-   - Webstorm: 
-      - https://www.jetbrains.com/help/webstorm/eslint.html
-      - https://www.jetbrains.com/help/webstorm/prettier.html 
+# A simple Todo List 
 
-Woche 1
-- HTML Gerüst erstellen für die Wireframes und Beginn CSS:
-   - /source/public/index.html
-   - /source/public/styles/index.css
-- Webstorm:
-   - /source/public/index.html "ausführen".
-- Visual Studio Code:
-   - Live Server nutzen: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer    
+The list contains simple todo items with a few properties:
+- Name
+- Due Date
+- Importance  (1 - 5)
+- Description
+- Completed / Done
 
-Folgende Befehle sind möglich
+### Sort   
+The list can be sorted by 4 buttons.  
+👉 Press button twice to toggle sort order
 
-| Befehl  |  Beschreibung |
-|---|---|
-| npm run stylelint  |   Testet ob die CSS Files in Ordnung sind. |
-| npm run eslint  |  Testet ob die JS Files in Ordnung sind. |
-| npm run all  |   Führt die Tests für CSS/JS aus. |
-| npm run start  |  Started den Web-Server: http://localhost:3000 |
+| Sort                    | initial sort order            |
+|-------------------------|-------------------------------|
+| ``By Name``             | ascending (A...Z)             |
+| ``By Due Date``         | ascending (oldest first)      |
+| ``By Creation Date``    | ascending (oldest first)      |
+| ``By Importance``       | descending (highest first)    |
+
+### Filter:  
+Press ``Filter Open`` to show only open items. 👉 Press again to show all.
+
+### Theme:
+A ``light`` and a ``dark`` theme are available, which can be toggled via the ``Toggle Theme`` button.  
+The selection is stored in the browser's localStorage and will be applied on next use.
+
+### Add / Edit Form  
+- Press ``New Task`` to add a new item to the list.
+- Click the ``Edit`` button of an item in the list to edit it.  
+
+For new items the due date will be set to the current day, importance to 3.  
+To save an item, Name, Due Date and Description are required.  
+Cancel will warn the user if changes would be lost.
+
+| Field                | Initial value       | Validation      |
+|----------------------|---------------------|-----------------|
+| ``Name``             |                     | required        |
+| ``Due Date``         | today's date        | required        |
+| ``Importance``       | 3                   |                 |
+| ``Done``             | false               |                 |
+| ``Description``      |                     | required        |
+

@@ -1,17 +1,8 @@
-import {sortObjectArray} from "./util.js";
-
 class DataService {
     static #todoList = [];
 
-    static getList(options) {
-        const arr = [...this.#todoList];
-        if (!options) {
-            return arr;
-        }
-        if ('name|description|dueDate|createdDate|importance|completed'.includes(options.sortBy)) {
-            sortObjectArray(arr, options.sortBy, options.sortDescending);
-        }
-        return options.filterOpen ? arr.filter(x => !x.completed) : arr;
+    static getList() {
+        return [...this.#todoList];
     }
 
     static setList(data) {
@@ -19,7 +10,7 @@ class DataService {
     }
 
     static getItem(id) {
-        return this.#todoList.find(x => x.id === id);
+        return this.#todoList.find(x => x.id == id);
     }
     
     static addItem(todoItem) {
@@ -34,6 +25,13 @@ class DataService {
         return index > -1
     }
 
+    static deleteItem(id) {
+        const index = this.#todoList.findIndex(x => x.id === id);
+        if (index > -1) {
+            this.#todoList.splice(index, 1);
+        }
+        return index > -1;
+    }
 }
 
 export default DataService

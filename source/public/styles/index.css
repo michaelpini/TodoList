@@ -134,6 +134,20 @@ ul {
     outline: 2px solid var(--toolbar-btn-color);
 }
 
+.btn-delete {
+    color: var(--toolbar-btn-color);
+    background: var(--toolbar-btn-background);
+}
+
+.btn-delete:hover {
+    background: red;
+    color: white;
+}
+
+.btn-delete:hover::after {
+    content: " -> no undo!";
+}
+
 .btn-toolbar {
     color: var(--toolbar-btn-color);
     background: var(--toolbar-btn-background);
