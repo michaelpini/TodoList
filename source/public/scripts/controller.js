@@ -125,12 +125,9 @@ async function initialize() {
 }
 
 export { initialize,
-    Data,
-    displayOptions,
     navBarHandler,
     toolbarHandler,
     editItemHandler,
-    loadListData,
     saveHandler,
     cancelHandler,
     deleteHandler,

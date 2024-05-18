@@ -1,13 +1,6 @@
 /* global Handlebars */
 import { DateTime } from "../ext-modules/luxon.js";
-import {
-    cancelHandler,
-    deleteHandler,
-    editItemHandler,
-    navBarHandler,
-    saveHandler,
-    toolbarHandler
-} from "./controller.js";
+import { cancelHandler, deleteHandler, editItemHandler, navBarHandler, saveHandler, toolbarHandler } from "./controller.js";
 
 const spinner = document.querySelector('#spinner');
 const displayOptions = {
@@ -76,6 +69,7 @@ function renderForm(data) {
 }
 
 function setView(view = 'list') {
+    displayOptions.view = view;
     if (view === 'list') {
         document.querySelector("#view-list").classList.remove("hidden");
         document.querySelector("#view-form").classList.add("hidden");
@@ -87,7 +81,6 @@ function setView(view = 'list') {
 
 /**
  * Sets the light or dark theme, depending on parameter p and stores the value in LocalStorage
- * @param displayOptions {Object} options object from controller
  * @param theme {string?: "light" | "dark" |"toggle"} optional: light | dark | toggle
  * @example
  * setTheme()  // applies value in localStorage, otherwise sets browser preference
@@ -117,13 +110,4 @@ function setTheme(theme) {
     }
 }
 
-export {
-    displayOptions,
-    initHandlebars,
-    initView,
-    renderList,
-    renderForm,
-    setTheme,
-    setView,
-    spinner,
-};
+export { displayOptions, initView, renderList, renderForm, setTheme, setView, spinner };
