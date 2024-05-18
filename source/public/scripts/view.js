@@ -1,41 +1,48 @@
 /* global Handlebars */
 import { DateTime } from "../ext-modules/luxon.js";
-import DataService from "../services/data.service.js";
-import TodoItem from "./todo-item.model.js";
+import {
+    cancelHandler,
+    deleteHandler,
+    editItemHandler,
+    navBarHandler,
+    saveHandler,
+    toolbarHandler
+} from "./controller.js";
 
+const spinner = document.querySelector('#spinner');
+const displayOptions = {
+    show: 'list',
+    sortBy: 'name',
+    sortMode: 'asc',
+    filterOpen: false,
+    theme: 'light',
+}
 let navTemplateCompiled = null;
 let listTemplateCompiled = null;
 let formTemplateCompiled = null;
-let formData = null;
 let iconAsc = '';
 let iconDesc = '';
 
+function addEventListeners() {
+    document.querySelector(".navbar").addEventListener('click', navBarHandler);
+    document.querySelector("#toolbar-parent").addEventListener('click', toolbarHandler);
+    document.querySelector('#list-parent').addEventListener('click', editItemHandler);
+    document.querySelector('form').addEventListener('submit', ev => {
+        ev.preventDefault();
+    })
+    document.querySelector('button[name="btnSave"]').addEventListener('click', saveHandler);
+    document.querySelector('button[name="btnCancel"]').addEventListener('click', cancelHandler);
+    document.querySelector('button[name="btnDelete"]').addEventListener('click', deleteHandler);
+}
+
 async function loadIcons() {
     const res1 = await fetch('../icons/sort-ascending.svg');
-    iconAsc= await res1.text();
+    iconAsc = await res1.text();
     const res2 = await fetch('../icons/sort-descending.svg');
-    iconDesc= await res2.text();
+    iconDesc = await res2.text();
 }
 
-function getFormData() {
-    const newData = { ...formData };
-    newData.name = document.querySelector("input[name=\"name\"]").value;
-    newData.description = document.querySelector("textarea[name=\"description\"]").value;
-    newData.importance = +document.querySelector("input[name=\"importance\"]").value;
-    newData.dueDate = document.querySelector("input[name=\"dueDate\"]").value;
-    newData.completed = document.querySelector("input[name=\"completed\"]").checked;
-    return newData;
-}
-
-function isDirty() {
-    const newData = getFormData();
-    for (const key of Object.keys(newData)) {
-        if (newData[key] !== formData[key]) return true;
-    }
-    return false;
-}
-
-function initHandlebars(displayOptions) {
+function initHandlebars() {
     Handlebars.registerHelper("hbFormatDate", str => DateTime.fromISO(str).toRelativeCalendar());
     Handlebars.registerHelper("hbGetClass", (baseClass, isActive) => `${baseClass}${isActive ? " btn-active" : ""}`);
     Handlebars.registerHelper("hbSortBy", (by) => {
@@ -51,6 +58,33 @@ function initHandlebars(displayOptions) {
     formTemplateCompiled = Handlebars.compile(document.querySelector("#form-template").innerHTML);
 }
 
+async function initView() {
+    await loadIcons();
+    initHandlebars();
+    setTheme();
+    addEventListeners();
+    renderList();
+}
+
+function renderList(data) {
+    document.querySelector("#toolbar-parent").innerHTML = navTemplateCompiled(displayOptions);
+    document.querySelector("#list-parent").innerHTML = listTemplateCompiled(data);
+}
+
+function renderForm(data) {
+    document.querySelector("#form-parent").innerHTML = formTemplateCompiled(data);
+}
+
+function setView(view = 'list') {
+    if (view === 'list') {
+        document.querySelector("#view-list").classList.remove("hidden");
+        document.querySelector("#view-form").classList.add("hidden");
+    } else {
+        document.querySelector("#view-list").classList.add("hidden");
+        document.querySelector("#view-form").classList.remove("hidden");
+    }
+}
+
 /**
  * Sets the light or dark theme, depending on parameter p and stores the value in LocalStorage
  * @param displayOptions {Object} options object from controller
@@ -60,7 +94,7 @@ function initHandlebars(displayOptions) {
  * setTheme('toggle')   // Toggles between light and dark
  * setTheme('light')    // Sets specified theme ('light' or 'dark')
  */
-function setTheme(displayOptions, theme) {
+function setTheme(theme) {
     switch (theme) {
         case "light":
         case "dark":
@@ -83,20 +117,13 @@ function setTheme(displayOptions, theme) {
     }
 }
 
-function renderList(displayOptions, data) {
-    document.querySelector("#toolbar-parent").innerHTML = navTemplateCompiled(displayOptions);
-    document.querySelector("#list-parent").innerHTML = listTemplateCompiled(data);
-}
-
-function renderForm(data) {
-    document.querySelector("#form-parent").innerHTML = formTemplateCompiled(data);
-}
-
-function showAddEditForm(id) {
-    document.querySelector("#view-list").classList.add("hidden");
-    document.querySelector("#view-form").classList.remove("hidden");
-    formData = DataService.getItem(id) || new TodoItem();
-    renderForm(formData);
-}
-
-export { getFormData, initHandlebars, isDirty, loadIcons, setTheme, renderList, renderForm, showAddEditForm };
+export {
+    displayOptions,
+    initHandlebars,
+    initView,
+    renderList,
+    renderForm,
+    setTheme,
+    setView,
+    spinner,
+};

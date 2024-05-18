@@ -1,5 +1,5 @@
-import initializeView from "./controller-view.js"
+import { initialize } from "./controller.js"
 
 window.onload = function onload() {
-  initializeView();
+  initialize();
 }   
