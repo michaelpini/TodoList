@@ -1,7 +1,7 @@
 {
-  "name": "cas-fee-projekt-1-starter-template",
+  "name": "cas-fee-projekt-1-todo-list",
   "version": "1.0.0",
-  "description": "Testat template",
+  "description": "A simple todo list using vanilla JS",
   "main": "public/scripts/main.js",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "eslint": "eslint \"**/*.js\"",
     "all": "npm run stylelint && npm run eslint  && node -e \"console.log('npm run all completed')\""
   },
-  "author": "Michael Gfeller",
+  "author": "Michael Pini",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.14.0",

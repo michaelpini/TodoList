@@ -14,6 +14,9 @@ External libraries:
   - [ ] getById
   - [ ] save  (create / update)
   - [ ] delete
+
+( For development the data is stored on the browsers IndexedDB storage )
+
 ---
 
 # A simple Todo List 
@@ -26,7 +29,7 @@ The list contains simple todo items with a few properties:
 - Completed / Done
 
 ### Sort   
-The list can be sorted by 4 buttons.  
+The list can be sorted by 4 buttons (drop down list in mobile view).  
 👉 Press button twice to toggle sort order
 
 | Sort                    | initial sort order            |
