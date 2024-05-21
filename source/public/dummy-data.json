@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Prepare Dinner",
+    "description": "Prepare Dinner for 4:\nAppetizer: Salad\nMain Dish: Spaghetti Bolognese\nDessert: Ice Cream.",
+    "importance": 2,
+    "completed": false,
+    "dueDate": "2024-05-22",
+    "createdDate": "2024-05-17",
+    "id": 23
+  },
+  {
+    "name": "Grocery Shopping",
+    "description": "- Bread\n- Milk\n- Butter\n- Ham \n- Eggs\n- Wine\n- Ice Cream.",
+    "importance": 3,
+    "completed": true,
+    "dueDate": "2024-05-21",
+    "createdDate": "2024-05-17",
+    "id": 24
+  },
+  {
+    "name": "Clean Shower",
+    "description": "Clean Shower after use\nDescale faucet.",
+    "importance": 3,
+    "completed": false,
+    "dueDate": "2024-05-18",
+    "createdDate": "2024-05-18",
+    "id": 25
+  },
+  {
+    "name": "Clean car",
+    "description": "Bring car to car wash.",
+    "importance": 1,
+    "completed": true,
+    "dueDate": "2024-05-21",
+    "createdDate": "2024-05-18",
+    "id": 26
+  },
+  {
+    "name": "Visit Schloss Rapperswil",
+    "description": "Schloss Rapperswil, auf einem felsigen weit in den Zürichsee reichenden Sporn zwischen 1220 und 1230 errichtet, ist von drei Seiten von Wasser umgeben und war so während Jahrhunderten bestens geschützt. Weithin mit seinen hohen Türmen sichtbar, dominiert es das Stadtbild der darunter liegenden Altstadt des Städtchens Rapperswil.\n\nVon seinem neuen Platz aus konnte der kurz darauf zum Graf ernannte Rudolf die Wasserstrasse von Zürich Richtung Bündnerpässe sowie die Pilgerströme zum Kloster Einsiedeln und den Querverkehr über die Seeenge beim Seedamm von Rapperswil überwachen. Das heutige Schloss bildet ein fast gleichseitiges Dreieck, wobei jede Ecke mit einem Turm verstärkt ist. Der höchste Turm im Südwesten wird Bergfried oder auch Gügeliturm genannt und war lange Zeit der Sitz des Hochwächters. Der fünfeckige Zeitturm im Osten beherbergt 3 Glocken, und neben einer Sonnenuhr zeigen zwei grosse Zifferblätter die Uhrzeit an. Zwischen diesen beiden Türmen befindet sich in südöstlicher Lage das wuchtige Schlossgebäude. Daneben führen von den beiden Ecktürmen Wehrgänge zum dritten Turm im Nordwesten, dem Pulverturm.\n\nAuf der Burgterrasse, dem Lindenhof, befindet sich seit 1868 die polnische Freiheitssäule, als Zeichen der schweizerischen Verbundenheit mit Völkern, die um ihre Freiheit ringen. Die Terrasse gewährt zudem einen beeindruckenden Ausblick auf die Altstadt, den Zürichsee, auf den Seedamm und die in der Ferne liegenden Alpen. Auf der Nordseite zieht sich ein betreuter Hirschpark mit 10–15 Damhirschen hinunter gegen den See, welcher an die Sage der Stadtgründung erinnern soll.",
+    "importance": 5,
+    "completed": false,
+    "dueDate": "2024-05-29",
+    "createdDate": "2024-05-21",
+    "id": 27
+  }
+]

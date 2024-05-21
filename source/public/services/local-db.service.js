@@ -1,5 +1,9 @@
 import { openDB } from '../ext-modules/idb.js';
 
+/**
+ * Local database service, using the browsers IndexedDB feature to store data locally
+ * Using idb library (https://www.npmjs.com/package/idb) for easier syntax
+ */
 class LocalDbService {
     static #db = null;
 
@@ -36,6 +40,15 @@ class LocalDbService {
             tx.done
         ]);
         return this.getById(id);
+    }
+
+    static async addMultiple(data) {
+        if (!data) return false;
+        if (!this.#db) await this.init();
+        const tx = this.#db.transaction('items', 'readwrite');
+        const txArray = data.map(item => tx.store.add(item))
+        await Promise.all([...txArray, tx.done]);
+        return this.getAll();
     }
 
     static async delete(id) {

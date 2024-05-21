@@ -3,6 +3,7 @@ import { sortObjectArray } from "../services/util.js";
 import { displayOptions, initView, renderForm, renderList, setTheme, setView, spinner } from "./view.js";
 import Data from "./model.js";
 import TodoItem from "./todo-item.js";
+import dummyData from "../dummy-data.json" with {type: 'json'};
 
 let formData = null;
 
@@ -15,12 +16,12 @@ function sortFilter() {
     renderList(data);
 }
 
-function navBarHandler(ev) {
+function navBarClickHandler(ev) {
     if (ev.target.id === 'NewTask') showAddEditForm();
     if (ev.target.id === 'ToggleMode') setTheme('toggle');
 }
 
-function toolbarHandler(ev) {
+function toolbarClickHandler(ev) {
     // SortBy button
     if (ev.target?.dataset?.sortBy) {
         if (displayOptions.sortBy === ev.target.dataset.sortBy) {
@@ -36,6 +37,13 @@ function toolbarHandler(ev) {
         displayOptions.filterOpen = !displayOptions.filterOpen;
         sortFilter();
     }
+}
+
+function toolbarSelectHandler(ev) {
+    const selectedOption = ev.target.options[ev.target.selectedIndex];
+    displayOptions.sortBy = selectedOption.value;
+    displayOptions.sortMode = selectedOption.dataset.sortMode;
+    sortFilter();
 }
 
 function editItemHandler(ev) {
@@ -100,23 +108,31 @@ function cancelHandler() {
 
 function deleteHandler() {
     const data = getFormData();
-    LocalDbService.delete(data.id).then(() => {
-        Data.delete(data.id);
-        renderList(Data.getAll());
-        document.querySelector('#view-form').classList.add('hidden');
-        document.querySelector('#view-list').classList.remove('hidden');
-    })
-        .catch(err => {
-        alert("Error deleting data");
-    })
+    if (confirm(`Are you sure you want to delete item "${data.name}"? \n⚠️ Caution: no undo!`)) {
+        LocalDbService.delete(data.id).then(() => {
+            Data.delete(data.id);
+            renderList(Data.getAll());
+            document.querySelector('#view-form').classList.add('hidden');
+            document.querySelector('#view-list').classList.remove('hidden');
+        })
+            .catch(err => {
+                alert("Error deleting data");
+            })
+    }
 }
 
 async function loadListData() {
     spinner.showModal();
-    const data = await LocalDbService.getAll();
+    let data = await LocalDbService.getAll();
+    if (!data.length) data = await populateDummyData();
+    // console.log(JSON.stringify(data));      // TODO: Delete
     Data.setAll(data);
     renderList(data);
     spinner.close();
+}
+
+async function populateDummyData() {
+    return LocalDbService.addMultiple(dummyData);
 }
 
 async function initialize() {
@@ -125,8 +141,9 @@ async function initialize() {
 }
 
 export { initialize,
-    navBarHandler,
-    toolbarHandler,
+    navBarClickHandler,
+    toolbarClickHandler,
+    toolbarSelectHandler,
     editItemHandler,
     saveHandler,
     cancelHandler,

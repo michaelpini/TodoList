@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <title>Note App</title>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js" integrity="sha256-/PJBs6QWvXijOFIX04kZpLb6ZtSQckdOIavLWKKOgXU=" crossorigin="anonymous" defer></script> -->
     <script src="./ext-modules/handlebars.min.js" defer></script>
     <script src="scripts/index.js" type="module"></script>
     <link rel="stylesheet" href="styles/index.css" />
     <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -16,7 +16,7 @@
 <!-- Main page with render slots for Handlebars -->
 <div class="container">
 
-    <!-- list -->
+    <!-- LIST -->
     <div id="view-list">
         <div class="todo-nav">
             <nav class="navbar">
@@ -32,7 +32,7 @@
         </main>
     </div>
 
-    <!-- form -->
+    <!-- FORM -->
     <div id="view-form" class="hidden">
         <div class="todo-form">
             <form id="form-parent">
@@ -57,18 +57,24 @@
 <!--                 HANDLEBARS TEMPLATES                 -->
 <!-- --------------------------------------------------- -->
 
-<!-- Nav bar template for Handlebars, will be rendered in id="toolbar-parent" -->
+<!-- NAV BAR template for Handlebars, will be rendered in id="toolbar-parent" -->
 <script id="nav-template" type="text/x-handlebars-template">
-    <button class="btn-toolbar" data-sort-by="name" data-sort-mode="asc">
+    <select name="Sort by" class="btn-toolbar sort-select">
+        <option value="name" data-sort-mode="asc" {{hbSetSelected "name" sortBy}}>By Name</option>
+        <option value="dueDate" data-sort-mode="asc" {{hbSetSelected "dueDate" sortBy}}>By Due Date</option>
+        <option value="createdDate" data-sort-mode="asc" {{hbSetSelected "createdDate" sortBy}}>By Creation Date</option>
+        <option value="importance" data-sort-mode="desc" {{hbSetSelected "importance" sortBy}}>By Importance</option>
+    </select>
+    <button class="btn-toolbar btn-sort" data-sort-by="name" data-sort-mode="asc">
         By Name{{{hbSortBy 'name'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="dueDate" data-sort-mode="asc">
+    <button class="btn-toolbar btn-sort" data-sort-by="dueDate" data-sort-mode="asc">
         By Due Date{{{hbSortBy 'dueDate'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="createdDate" data-sort-mode="asc">
+    <button class="btn-toolbar btn-sort" data-sort-by="createdDate" data-sort-mode="asc">
         By Creation Date{{{hbSortBy 'createdDate'}}}
     </button>
-    <button class="btn-toolbar" data-sort-by="importance" data-sort-mode="desc">
+    <button class="btn-toolbar btn-sort" data-sort-by="importance" data-sort-mode="desc">
         By Importance{{{hbSortBy 'importance'}}}
     </button>
     <button class="{{hbGetClass "btn-toolbar align-right" filterOpen}}" data-filter-open="toggle">
@@ -77,20 +83,20 @@
 </script>
 
 
-<!-- List template for Handlebars, will be rendered in id="list-parent" -->
+<!-- LIST template for Handlebars, will be rendered in id="list-parent" -->
 <script id="list-template" type="text/x-handlebars-template">
     {{#if this.length}}
         <ul>
             {{#each this}}
                 <li>
                     <div class="li-container">
-                        <div class="grid-date" title="{{dueDate}}">{{hbFormatDate dueDate}}</div>
-                        <div class="grid-name">{{name}}</div>
-                        <div class="grid-importance">{{{hbFormatImportance importance}}}</div>
                         <div class="grid-status">
                             <input type="checkbox" class="disabled" {{#if completed}}checked{{/if}}>
-                            <label>done</label>
+                            <label>{{#if completed}}done{{else}}open{{/if}}</label>
                         </div>
+                        <div class="grid-name">{{name}}</div>
+                        <div class="grid-importance">{{{hbFormatImportance importance}}}</div>
+                        <div class="grid-date" title="{{dueDate}}">{{hbFormatDate dueDate}}</div>
                         <div class="grid-description">{{description}}</div>
                         <div class="grid-edit">
                             <button class="btn-action" data-id="{{id}}">Edit</button>
@@ -105,7 +111,7 @@
 </script>
 
 
-<!-- Form template for Handlebars, will be rendered in id="form-parent" -->
+<!-- FORM template for Handlebars, will be rendered in id="form-parent" -->
 <script id="form-template" type="text/x-handlebars-template">
     <h2>{{#if id}}Edit task{{else}}Add new task{{/if}}</h2>
     <div class="flex col mb-1">

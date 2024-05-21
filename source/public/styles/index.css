@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
     font-family: system-ui;
+    font-size: 16px;
 }
 
 :root {
@@ -83,6 +84,9 @@ textarea {
     border-width: 2px;
     background-color: var(--input-background-color);
     color: var(--input-text-color);
+}
+
+textarea {
     resize: vertical;
 }
 
@@ -101,6 +105,12 @@ li {
 
 ul {
     padding: 0;
+}
+
+select {
+    border: none;
+    margin-right: 0.5rem;
+    border-radius: 3px;
 }
 
 [type="checkbox"] {
@@ -144,8 +154,8 @@ ul {
     color: white;
 }
 
-.btn-delete:hover::after {
-    content: " -> no undo!";
+.btn-sort {
+    display: flex;
 }
 
 .btn-toolbar {
@@ -162,7 +172,7 @@ ul {
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-width: 31rem;
+    min-width: 20rem;
     max-width: 50rem;
     height: calc(100vh - 16px);
     margin: 0 auto;
@@ -175,12 +185,12 @@ ul {
     padding-bottom: 0.8rem;
 }
 
-.toolbar {
-    border-bottom: 1px solid var(--line-color);
+.sort-select {
+    display: none;
 }
 
-.grid-name {
-    font-weight: bold;
+.toolbar {
+    border-bottom: 1px solid var(--line-color);
 }
 
 .grid-description {
@@ -191,14 +201,31 @@ ul {
 
 .grid-edit {
     grid-area: edit;
-    margin: auto;
+    margin: auto 0 auto auto;
+}
+
+.grid-name {
+    grid-area: name;
+    font-size: x-large;
+    align-self: center;
+}
+
+.grid-importance {
+    grid-area: importance;
+    margin-left: auto;
+    align-self: center;
+}
+
+.grid-status {
+    grid-area: status;
+    align-self: center;
 }
 
 .li-container {
     display: grid;
     grid-template:
-        "date title importance edit"
-        "status descr descr edit" / minmax(6rem, 20%) 1fr 5rem auto;
+        "status name importance edit"
+        "done descr descr descr" / minmax(6rem, 20%) 1fr 5rem auto;
     gap: 1rem;
     border-bottom: 1px solid;
     border-bottom-color: var(--line-color);
@@ -283,4 +310,21 @@ ul {
 
 .w-100 {
     width: 100%;
+}
+
+@media (max-width: 600px) {
+    .sort-select {
+        display: inline-block;
+    }
+
+    .btn-sort {
+        display: none;
+    }
+
+    .li-container {
+        grid-template:
+            "name name edit"
+            "status date importance"
+            "descr descr descr" / 1fr 1fr 1fr;
+    }
 }

@@ -1,6 +1,14 @@
 /* global Handlebars */
 import { DateTime } from "../ext-modules/luxon.js";
-import { cancelHandler, deleteHandler, editItemHandler, navBarHandler, saveHandler, toolbarHandler } from "./controller.js";
+import {
+    cancelHandler,
+    deleteHandler,
+    editItemHandler,
+    navBarClickHandler,
+    saveHandler,
+    toolbarClickHandler,
+    toolbarSelectHandler
+} from "./controller.js";
 
 const spinner = document.querySelector('#spinner');
 const displayOptions = {
@@ -17,8 +25,9 @@ let iconAsc = '';
 let iconDesc = '';
 
 function addEventListeners() {
-    document.querySelector(".navbar").addEventListener('click', navBarHandler);
-    document.querySelector("#toolbar-parent").addEventListener('click', toolbarHandler);
+    document.querySelector('.navbar').addEventListener('click', navBarClickHandler);
+    document.querySelector('#toolbar-parent').addEventListener('click', toolbarClickHandler);
+    document.querySelector('#toolbar-parent').addEventListener('change', toolbarSelectHandler);
     document.querySelector('#list-parent').addEventListener('click', editItemHandler);
     document.querySelector('form').addEventListener('submit', ev => {
         ev.preventDefault();
@@ -44,6 +53,7 @@ function initHandlebars() {
         }
         return "";
     });
+    Handlebars.registerHelper("hbSetSelected", (option, sortBy) => option === sortBy ? 'selected' : '');
     Handlebars.registerHelper("hbFormatImportance", p => "&#10045;".repeat(+p));
     Handlebars.registerHelper("hbAddAttribute", (attr, condition) => condition ? attr : "");
     navTemplateCompiled = Handlebars.compile(document.querySelector("#nav-template").innerHTML);
@@ -59,7 +69,7 @@ async function initView() {
     renderList();
 }
 
-function renderList(data) {
+function renderList(data = null) {
     document.querySelector("#toolbar-parent").innerHTML = navTemplateCompiled(displayOptions);
     document.querySelector("#list-parent").innerHTML = listTemplateCompiled(data);
 }
@@ -80,14 +90,14 @@ function setView(view = 'list') {
 }
 
 /**
- * Sets the light or dark theme, depending on parameter p and stores the value in LocalStorage
- * @param theme {string?: "light" | "dark" |"toggle"} optional: light | dark | toggle
+ * Sets the light or dark theme, depending on parameter theme and stores the value in LocalStorage
+ * @param theme {string?: "light" | "dark" | "toggle" | "default"} optional: light | dark | toggle | default
  * @example
  * setTheme()  // applies value in localStorage, otherwise sets browser preference
  * setTheme('toggle')   // Toggles between light and dark
  * setTheme('light')    // Sets specified theme ('light' or 'dark')
  */
-function setTheme(theme) {
+function setTheme(theme = 'default') {
     switch (theme) {
         case "light":
         case "dark":
@@ -96,6 +106,7 @@ function setTheme(theme) {
         case "toggle":
             displayOptions.theme = (displayOptions.theme === "light") ? "dark" : "light";
             break;
+        case 'default':
         default:
             if (Object.hasOwn(localStorage, "theme")) {
                 displayOptions.theme = localStorage.getItem("theme");
