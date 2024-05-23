@@ -21,7 +21,7 @@
 }
 
 [data-theme="dark"] {
-    --text-color: hsl(0deg 0% 85%);
+    --text-color: hsl(0deg 0% 90%);
     --background-color: hsl(0deg 0% 16%);
     --line-color: hsl(0deg 0% 40%);
     --toolbar-btn-color: ghostwhite;

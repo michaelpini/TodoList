@@ -1,3 +1,5 @@
+import { sortObjectArray } from "../services/util.js";
+
 class Data {
     static #data = [];
 
@@ -31,6 +33,18 @@ class Data {
             this.#data.splice(index, 1);
         }
         return index > -1;
+    }
+
+    static getSortedFiltered(sortBy, sortMode, filter) {
+        let data = [...this.#data];
+        sortObjectArray(data, sortBy, sortMode === 'desc');
+        switch (filter) {
+            case 'open':
+                data = data.filter(x => !x.completed);
+                break;
+            default:
+        }
+        return data;
     }
 }
 

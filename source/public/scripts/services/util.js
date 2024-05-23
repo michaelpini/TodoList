@@ -69,4 +69,32 @@ function saveToFile (obj, filename) {
     URL.revokeObjectURL(url);
 }
 
-export { sortObjectArray, getRandomId, saveToFile };
+/**
+ * creates a deferred object containing a promise, which can be resolved or rejected
+ * @example:
+ * const deferred = new Deferred();
+ *
+ * async function wait() {
+ *     console.log('waiting...');
+ *     await deferred.promise;
+ *     console.log('resolved!');
+ * }
+ * wait();
+ * setTimeout(() => deferred.resolve(), 1000);
+ */
+class Deferred {
+    promise;
+
+    resolve;
+
+    reject;
+
+    constructor() {
+        this.promise = new Promise((resolve, reject) => {
+            this.reject = reject;
+            this.resolve = resolve;
+        });
+    }
+}
+
+export { sortObjectArray, getRandomId, saveToFile, Deferred };

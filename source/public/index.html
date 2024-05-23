@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Note App</title>
-    <script src="./ext-modules/handlebars.min.js" defer></script>
+    <script src="libraries/handlebars.min.js" defer></script>
     <script src="scripts/index.js" type="module"></script>
     <link rel="stylesheet" href="styles/index.css" />
     <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
@@ -91,7 +91,7 @@
                 <li>
                     <div class="li-container">
                         <div class="grid-status">
-                            <input type="checkbox" class="disabled" {{#if completed}}checked{{/if}}>
+                            <input type="checkbox" class="disabled" {{#if completed}}checked{{else}}disabled{{/if}}>
                             <label>{{#if completed}}done{{else}}open{{/if}}</label>
                         </div>
                         <div class="grid-name">{{name}}</div>

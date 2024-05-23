@@ -1,4 +1,4 @@
-import { DateTime } from "../ext-modules/luxon.js";
+import { DateTime } from "../../libraries/luxon.js";
 
 class TodoItem {
     name = '';
@@ -13,15 +13,12 @@ class TodoItem {
 
     createdDate;
 
-    id = null;
-    
     constructor(
         name,
         description,
         dueDate,
         importance,
         completed,
-        id
     ) {
         const now = DateTime.now().toISODate();
         const due = DateTime.fromISO(dueDate);
@@ -31,11 +28,6 @@ class TodoItem {
         this.importance = +importance || 3;
         this.completed = completed || false;
         this.createdDate = now;
-        if (id) {
-            this.id = id
-        } else {
-            delete this.id
-        }
     }
 }
 
