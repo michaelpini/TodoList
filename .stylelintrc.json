@@ -3,5 +3,5 @@
   "rules": {
     "indentation": [4]
   },
-  "ignoreFiles": ["source/public/ext-modules/**/*"]
+  "ignoreFiles": ["source/public/libraries/**/*"]
 }

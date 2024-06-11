@@ -1,10 +1,17 @@
 /* global Handlebars */
-import Data from "../model/data.js";
-import LocalDbService from "../services/local-db.service.js";
+import { DataService } from "../model/data.service.js";
 import dummyData from "../../json/dummy-data.json" with { type: 'json' };
 import { DateTime } from "../../libraries/luxon.js";
 import { initForm, show } from "./form-controller.js";
+import { ServerService } from "../services/server.service.js";
+import { LocalDbService } from "../services/local-db.service.js";
 
+let dataService = new DataService();
+let persistenceService;
+switch ('server') {
+    case 'server': persistenceService = new ServerService(); break;
+    case 'localdb': persistenceService = new LocalDbService(); break;
+}
 const spinner = document.querySelector('#spinner');
 const displayOptions = {
     show: 'list',
@@ -62,7 +69,7 @@ function listItemClickHandler(ev) {
 }
 
 function renderSortedFiltered() {
-    let data = Data.getSortedFiltered(
+    let data = dataService.getSortedFiltered(
         displayOptions.sortBy, displayOptions.sortMode, displayOptions.filterOpen && 'open');
     renderList(data);
 }
@@ -107,15 +114,18 @@ async function loadIcons() {
 
 async function loadListData() {
     spinner.showModal();
-    let data = await LocalDbService.getAll();
-    if (!data.length) data = await populateDummyData();
-    Data.setAll(data);
+    let data = await persistenceService.getAll();
+    //if (!data.length) data = await populateDummyData();
+    dataService.setAll(data);
     renderSortedFiltered();
     spinner.close();
 }
 
 async function populateDummyData() {
-    return LocalDbService.addMultiple(dummyData);
+    for (let item of dummyData) {
+        await persistenceService.save(item);
+    }
+    return persistenceService.getAll();
 }
 
 // Render View
@@ -175,5 +185,5 @@ function showForm(id) {
         .finally(() => setView('list'))
 }
 
-export { initialize, spinner };
+export { dataService, initialize, persistenceService, spinner };
 

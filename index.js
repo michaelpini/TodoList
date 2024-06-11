@@ -1,11 +1,8 @@
-import express from 'express';
+import { app } from "./source/express/app.js";
 
-const app = express();
+const host = "localhost";
 const port = 3000;
-
-app.use(express.static('source/public'));
-
 app.listen(port, () => {
     // eslint-disable-next-line no-console
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`Todo app listening at http://${host}:${port}`);
 });

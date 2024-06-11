@@ -1,25 +1,32 @@
 import { sortObjectArray } from "../services/util.js";
 
-class Data {
-    static #data = [];
+class DataService {
+    static #instance = null;
+    #data = [];
 
-    static getAll() {
+    constructor() {
+        if (DataService.#instance) return DataService.#instance;
+        DataService.#instance = this;
+    }
+
+
+    getAll() {
         return [...this.#data];
     }
 
-    static setAll(data) {
+    setAll(data) {
         this.#data = data || [];
     }
 
-    static getById(id) {
+    getById(id) {
         return this.#data.find(x => String(x.id) === String(id));
     }
 
-    static add(todoItem) {
+    add(todoItem) {
         this.#data.push(todoItem);
     }
 
-    static update(todoItem) {
+    update(todoItem) {
         const index = this.#data.findIndex(x => String(x.id) === String(todoItem.id));
         if (index > -1) {
             this.#data[index] = todoItem;
@@ -27,7 +34,7 @@ class Data {
         return index > -1
     }
 
-    static delete(id) {
+    delete(id) {
         const index = this.#data.findIndex(x => String(x.id) === String(id));
         if (index > -1) {
             this.#data.splice(index, 1);
@@ -35,7 +42,7 @@ class Data {
         return index > -1;
     }
 
-    static getSortedFiltered(sortBy, sortMode, filter) {
+    getSortedFiltered(sortBy, sortMode, filter) {
         let data = [...this.#data];
         sortObjectArray(data, sortBy, sortMode === 'desc');
         switch (filter) {
@@ -48,4 +55,4 @@ class Data {
     }
 }
 
-export default Data
+export { DataService }

@@ -2,24 +2,13 @@ import { DateTime } from "../../libraries/luxon.js";
 
 class TodoItem {
     name = '';
-
     description = '';
-
     importance = 3;
-
     completed = false;
-
     dueDate;
-
     createdDate;
 
-    constructor(
-        name,
-        description,
-        dueDate,
-        importance,
-        completed,
-    ) {
+    constructor( name, description, dueDate, importance, completed ) {
         const now = DateTime.now().toISODate();
         const due = DateTime.fromISO(dueDate);
         this.name = name || '';
@@ -31,4 +20,4 @@ class TodoItem {
     }
 }
 
-export default TodoItem
+export { TodoItem }

@@ -18,7 +18,10 @@
     "import/extensions": "off",
     "object-curly-newline": "off",
     "object-curly-spacing": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "import/prefer-default-export": "off",
+    "no-use-before-define": "off",
+    "lines-between-class-members": "off"
   },
   "ignorePatterns": ["source/public/ext-modules/**/*"]
 }

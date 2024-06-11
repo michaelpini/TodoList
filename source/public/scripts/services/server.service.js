@@ -1,71 +1,115 @@
-const urlBase = "http://localhost:8080/";
-const urlGetAll = `${urlBase}get/`;
-const urlGetById = `${urlBase}get/id:?`;
-const urlSave = `${urlBase}save/`;
-const urlDelete = `${urlBase}delete/id:?`;
+const urlBase = (new URL(window.location.href)).origin;
+const urlApi = `${urlBase}/api`;
 
+const urlGetAll = `${urlApi}/`;
+const urlGetById = `${urlApi}/:id`;
+const urlAddItem = `${urlApi}/`;
+const urlUpdateItem = `${urlApi}/:id`;
+const urlDeleteItem = `${urlApi}/:id`;
+
+/**
+ * Server service using AJAX requests connecting to express server <br>
+ * Singleton class, instantiating only once
+ * @example
+ * const persistenceService = new ServerService();
+ */
 class ServerService {
-    static async getAll() {
-        try {
-            const response = await fetch(urlGetAll);
-            const data = await response.json();
-            return data;
-        }
-        catch (error) {
-            alert('Error loading list from server');
-            return false;
-        }
+    static #instance = null;
+
+    constructor() {
+        if (ServerService.#instance) return ServerService.#instance;
+        ServerService.#instance = this;
     }
 
-    static async getById(id) {
-        try {
-            const response = await fetch(urlGetById.replace('id:?', id));
-            const data = await response.json();
-            return data;
-        }
-        catch (error) {
-            alert('Error loading item from server');
-            return false;
-        }
+    /**
+     * Get all items
+     * @returns {Promise<TodoItem[]|undefined>} Promise -> array of TodoItems
+     */
+    async getAll() {
+        return this.#ajax('GET', urlGetAll);
     }
 
-    static async save(item) {
-        // no id -> add item
-        // valid id -> edit item
-        // return added / updated item
+    /**
+     * Get a single TodoItem by id
+     * @param id
+     * @returns {Promise<TodoItem|undefined>} Promise -> TodoItem
+     */
+    async getById(id) {
+        const url = urlGetById.replace(':id', id);
+        return this.#ajax('GET', url);
+    }
+
+    /**
+     * Adds or updates a TodoItem <br>
+     * - valid item.id -> Updates the corresponding item
+     * - invalid item.id -> Adds item as new TodoItem
+     * @param item
+     * @returns {Promise<TodoItem|undefined>} Promise -> TodoItem (with added id in case of new item)
+     */
+    async save(item) {
+        const {id} = item;
+        const url = id ? urlUpdateItem.replace(':id', id) : urlAddItem;
+        const method = id ? 'PUT' : 'POST';
+        return this.#ajax(method, url, item);
+    }
+
+    /**
+     * Add a TodoItem <br>
+     * @param item
+     * @returns {Promise<TodoItem|undefined>} Promise -> TodoItem (with added id)
+     */
+    async add(item) {
+        return this.save(item);
+    }
+
+    /**
+     * Update a TodoItem (match by id) <br>
+     * @param item
+     * @returns {Promise<TodoItem|undefined>} Promise -> TodoItem
+     */
+    async update(item) {
+        return this.save(item);
+    }
+
+    /**
+     * Delete a TodoItem by id
+     * @param id
+     * @returns {Promise<TodoItem|undefined>} Promise -> deleted id
+     */
+    async delete(id) {
+        const url = urlDeleteItem.replace(':id', id);
+        return this.#ajax('DELETE', url);
+    }
+
+    /**
+     * AJAX request using fetch <br>
+     * Returns Promise:
+     * ```
+     * - resolves with json object, if ok (status 200...399)
+     * - rejects with Error otherwise
+     * ```
+     * @param method {'GET'|'PUT'|'POST'|'DELETE'} HTTP method (e.g. 'GET')
+     * @param url {string} api URL (e.g. '/api/:id
+     * @param data {json} payload object (e.g. TodoItem)
+     * @returns {Promise<json>} Promise -> response object (e.g. TodoItem)
+     */
+    async #ajax(method, url, data = undefined) {
         const options = {
-            method: 'POST',
+            method,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
-            body: JSON.stringify(item)
+            body: JSON.stringify(data),
         }
-        try {
-            const response = await fetch(urlSave, options);
-            const data = await response.json();
-            return data;  // Expecting saved item as json object
+        const response = await fetch(url, options);
+        if (response.status >= 200 && response.status < 400) {
+            return response.json();
         }
-        catch (error) {
-            alert('Error saving item to server');
-            return false;
-        }
-    }
-
-    static async delete(id) {
-        try {
-            const response = await fetch(urlDelete.replace('id:?', id));
-            const data = await response.json();
-            return data;
-        }
-        catch (error) {
-            alert('Error deleting item from server');
-            return false;
-        }
-
+        throw new Error(response.statusText);
     }
 }
 
-export default ServerService;
+export { ServerService }
 
 

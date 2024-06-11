@@ -15,7 +15,7 @@
  * const sortedCopy = sortObjectArray(arr, 'age', true, true);
  */
 function sortObjectArray(array, prop, descending = false, clone = false) {
-    if (!Array.isArray(array) || !Object.hasOwn(array[0], prop)) return array;
+    if (!Array.isArray(array) || !array.length || !Object.hasOwn(array[0], prop)) return array;
     const arr = clone ? [...array] : array;
     arr.sort((a, b) => {
         if (a[prop] > b[prop]) return descending ? -1 : 1;

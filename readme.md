@@ -9,11 +9,9 @@ External libraries:
 ---
 # <mark>Open Items
 - [ ] Disable ``delete`` button for new item
-- [ ] Implement server API 
-  - [ ] getAll
-  - [ ] getById
-  - [ ] save  (create / update)
-  - [ ] delete
+- [ ] Reload button
+- [ ] Show CreatedDate + LastEditDate on form
+- [ ] Remove DummyData
 
 ( For development the data is stored on the browsers IndexedDB storage )
 

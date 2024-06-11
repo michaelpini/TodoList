@@ -1,12 +1,21 @@
 import { openDB } from "../../libraries/idb.js";
 
 /**
- * Local database service, using the browsers ``IndexedDB`` feature to store data locally
- *
- * Using idb library (https://www.npmjs.com/package/idb) for easier syntax
+ * Local database service, using the browsers ``IndexedDB`` feature to store data locally. ⚠️ Data will be lost after clearing cache! <br>
+ * Using idb library (https://www.npmjs.com/package/idb) for easier syntax <br>
+ * Singleton class, instantiates only once
+ * @example
+ * const persistenceService = new LocalDBService(); // Singleton
  */
 class LocalDbService {
-    static #db = null;
+    static #instance = null;
+    #db = null;
+
+    constructor() {
+        if (LocalDbService.#instance) return LocalDbService.#instance;
+        LocalDbService.#instance = this;
+        this.#init();
+    }
 
     /**
      * Opens the db ``todo-db`` and assigns it to ``#db``
@@ -14,7 +23,7 @@ class LocalDbService {
      * If not initialized yet, creates ``todo-db`` and adds objectStore ``items``
      * @returns {Promise<boolean>}
      */
-    static async init(){
+    async #init(){
         this.#db = await openDB('todo-db', 1, {
             upgrade (db) {
                 if (!db.objectStoreNames.contains('items')) {
@@ -29,8 +38,7 @@ class LocalDbService {
      * Returns an array of all list items
      * @returns {Promise<items[]>}
      */
-    static async getAll() {
-        if (!this.#db) await this.init();
+    async getAll() {
         return this.#db.getAll('items');
     }
 
@@ -39,28 +47,44 @@ class LocalDbService {
      * @param {string} id the item's id
      * @returns {Promise<item|boolean>} the item or false
      */
-    static async getById(id) {
+    async getById(id) {
         if (!id) return false;
-        if (!this.#db) await this.init();
         return this.#db.get('items', id);
     }
 
     /**
-     * Saves an item:
+     * Adds or updates an item:
      * - adds as new item if data.id is missing
      * - updates the item with the corresponding id
      * @param {item} data the item to be saved
      * @returns {Promise<item|boolean>} the saved item (including server assigned id)
      */
-    static async save(data) {
-        if (!data) return false;
-        if (!this.#db) await this.init();
+    async save(data) {
+        const saveData = {...data, lastEditDate: new Date().toISOString()};
         const tx = this.#db.transaction('items', 'readwrite');
         const [id] = await Promise.all([
-            data.id ? tx.store.put(data) : tx.store.add(data),
+            saveData.id ? tx.store.put(saveData) : tx.store.add(saveData),
             tx.done
         ]);
         return this.getById(id);
+    }
+
+    /**
+     * Adds an item
+     * @param {item} data the item to be added
+     * @returns {Promise<item|boolean>} Promise -> the added item (including server assigned id)
+     */
+    async add(data) {
+        return this.save(data);
+    }
+
+    /**
+     * Updates an item (match by id)
+     * @param {item} data the item to be updated
+     * @returns {Promise<item|boolean>} Promise -> the updated item
+     */
+    async update(data) {
+        return this.save(data);
     }
 
     /**
@@ -68,9 +92,7 @@ class LocalDbService {
      * @param {items[]} data array of items to add
      * @returns {Promise<items[]|boolean>} array of all items
      */
-    static async addMultiple(data) {
-        if (!data) return false;
-        if (!this.#db) await this.init();
+    async addMultiple(data) {
         const tx = this.#db.transaction('items', 'readwrite');
         const txArray = data.map(item => tx.store.add(item))
         await Promise.all([...txArray, tx.done]);
@@ -82,9 +104,8 @@ class LocalDbService {
      * @param {string} id the id of the item to delete
      * @returns {Promise<void>} void
      */
-    static async delete(id) {
+    async delete(id) {
         if (!id) throw new Error('no id')
-        if (!this.#db) await this.init();
         const tx = this.#db.transaction('items', 'readwrite');
         await Promise.all([
             tx.store.delete(id),
@@ -94,4 +115,4 @@ class LocalDbService {
 
 }
 
-export default LocalDbService;
+export { LocalDbService }
