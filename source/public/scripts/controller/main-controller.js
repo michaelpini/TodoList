@@ -36,6 +36,9 @@ function addEventListeners() {
 function navBarClickHandler(ev) {
     if (ev.target.id === 'NewTask') showForm();
     if (ev.target.id === 'ToggleMode') setTheme('toggle');
+    if (ev.target.id === 'Reload') {
+        ev.ctrlKey ? populateDummyData() : loadListData().then();
+    }
 }
 
 function toolbarClickHandler(ev) {
@@ -91,6 +94,7 @@ async function initList() {
 
 function initHandlebars() {
     Handlebars.registerHelper('hbFormatDate', str => DateTime.fromISO(str).toRelativeCalendar());
+    Handlebars.registerHelper('hbFormatDateTime', str => str ? DateTime.fromISO(str).toFormat('yyyy-MM-dd hh:mm') : '');
     Handlebars.registerHelper('hbGetClass', (baseClass, isActive) => `${baseClass}${isActive ? ' btn-active' : ''}`);
     Handlebars.registerHelper('hbSortBy', (by) => {
         if (displayOptions.sortBy === by) {
@@ -106,16 +110,14 @@ function initHandlebars() {
 }
 
 async function loadIcons() {
-    const res1 = await fetch('../icons/sort-ascending.svg');
-    svgAsc = await res1.text();
-    const res2 = await fetch('../icons/sort-descending.svg');
-    svgDesc = await res2.text();
+    svgAsc = await (await fetch('../icons/sort-ascending.svg')).text();
+    svgDesc = await (await fetch('../icons/sort-descending.svg')).text()
+
 }
 
 async function loadListData() {
     spinner.showModal();
     let data = await persistenceService.getAll();
-    //if (!data.length) data = await populateDummyData();
     dataService.setAll(data);
     renderSortedFiltered();
     spinner.close();
@@ -125,7 +127,7 @@ async function populateDummyData() {
     for (let item of dummyData) {
         await persistenceService.save(item);
     }
-    return persistenceService.getAll();
+    await loadListData();
 }
 
 // Render View

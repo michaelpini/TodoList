@@ -6,6 +6,7 @@ import { Deferred } from "../services/util.js";
 let formTemplateCompiled = null;
 let formData = null;
 let deferred = null;
+const importanceLevels = [1, 2, 3, 4, 5];
 
 // Event Handlers
 async function saveHandler() {
@@ -103,7 +104,7 @@ async function show(id) {
 }
 
 function renderForm(data) {
-    document.querySelector("#form-parent").innerHTML = formTemplateCompiled(data);
+    document.querySelector("#form-parent").innerHTML = formTemplateCompiled(data, {data: {levels: importanceLevels}});
 }
 
 export { show, initForm };

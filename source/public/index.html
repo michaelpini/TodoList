@@ -21,7 +21,8 @@
         <div class="todo-nav">
             <nav class="navbar">
                 <button id="NewTask" class="btn-action">New Task</button>
-                <button id="ToggleMode" class="btn-action align-right">Toggle Theme</button>
+                <button id="Reload" class="btn-action align-right" title="Reload"><img alt='reload' src="./icons/reload.svg" class="disabled"></button>
+                <button id="ToggleMode" class="btn-action">Toggle Theme</button>
             </nav>
             <nav id="toolbar-parent" class="toolbar">
                 <!-- HANDLEBARS Toolbar Slot -->
@@ -113,7 +114,10 @@
 
 <!-- FORM template for Handlebars, will be rendered in id="form-parent" -->
 <script id="form-template" type="text/x-handlebars-template">
-    <h2>{{#if id}}Edit task{{else}}Add new task{{/if}}</h2>
+    <div class="flex ">
+        <div class="x-large">{{#if id}}Edit task{{else}}New task{{/if}}</div>
+        <div class="align-right light">{{#if lastEditDate}}Last edited: {{hbFormatDateTime lastEditDate}}{{/if}} </div>
+    </div>
     <div class="flex col mb-1">
         <label>Name</label>
         <input name="name" value="{{name}}" class="w-100" required />
@@ -127,11 +131,9 @@
             <label>Importance</label>
             <input name="importance" type="range" min="1" max="5" step="1" list="markers" value="{{importance}}"/>
             <datalist id="markers">
-                <option value="1" label="1"></option>
-                <option value="2" label="2"></option>
-                <option value="3" label="3"></option>
-                <option value="4" label="4"></option>
-                <option value="5" label="5"></option>
+                {{#each @levels}}
+                    <option value="{{.}}" label="{{.}}"></option>
+                {{/each}}
             </datalist>
         </div>
         <div class="flex col mb-1">

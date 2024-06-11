@@ -1,19 +1,24 @@
-| CAS FEE Project 1    | Michael Pini     | May 2024     |
-|----------------------|------------------|--------------|  
+| CAS FEE Project 1    | Michael Pini     | June 2024 |
+|----------------------|------------------|-----------|  
 ```
 External libraries:
 - handlebars.js  (templating engine)
 - luxon.js       (date / time handling)
 - idb.js         (utility for indexed db handling - local storage)
+
+Backend API:     express.js
+Persistence:     NeDB  (Alternatively the browsers IndexedDB storage)
 ```
+Instructions:  
+1. Install dependencies: ```npm install```
+2. Start server: ```npm start```
+3. In browser goto http://localhost:3000 to open application
+
+
 ---
 # <mark>Open Items
 - [ ] Disable ``delete`` button for new item
-- [ ] Reload button
-- [ ] Show CreatedDate + LastEditDate on form
-- [ ] Remove DummyData
 
-( For development the data is stored on the browsers IndexedDB storage )
 
 ---
 
@@ -39,6 +44,10 @@ The list can be sorted by 4 buttons (drop down list in mobile view).
 
 ### Filter:  
 Press ``Filter Open`` to show only open items. 👉 Press again to show all.
+
+### Reload:
+Press the reload button to load data from the server.  
+👉 ```Ctrl``` + click will add some dummy data.
 
 ### Theme:
 A ``light`` and a ``dark`` theme are available, which can be toggled via the ``Toggle Theme`` button.  

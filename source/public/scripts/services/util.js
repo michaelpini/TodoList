@@ -70,23 +70,24 @@ function saveToFile (obj, filename) {
 }
 
 /**
- * creates a deferred object containing a promise, which can be resolved or rejected
+ * creates a deferred object with the following properties:
+ * - promise: a Promise that can be awaited for
+ * - resolve: method to resolve the promise
+ * - reject: method to reject promise
  * @example:
  * const deferred = new Deferred();
  *
- * async function wait() {
+ * async function waitForIt() {
  *     console.log('waiting...');
  *     await deferred.promise;
  *     console.log('resolved!');
  * }
- * wait();
+ * waitForIt();
  * setTimeout(() => deferred.resolve(), 1000);
  */
 class Deferred {
     promise;
-
     resolve;
-
     reject;
 
     constructor() {

@@ -5,8 +5,7 @@
     "importance": 2,
     "completed": false,
     "dueDate": "2024-05-22",
-    "createdDate": "2024-05-17",
-    "id": 23
+    "createdDate": "2024-05-17"
   },
   {
     "name": "Grocery Shopping",
@@ -14,8 +13,7 @@
     "importance": 3,
     "completed": true,
     "dueDate": "2024-05-21",
-    "createdDate": "2024-05-17",
-    "id": 24
+    "createdDate": "2024-05-17"
   },
   {
     "name": "Clean Shower",
@@ -23,8 +21,7 @@
     "importance": 3,
     "completed": false,
     "dueDate": "2024-05-18",
-    "createdDate": "2024-05-18",
-    "id": 25
+    "createdDate": "2024-05-18"
   },
   {
     "name": "Clean car",
@@ -32,8 +29,7 @@
     "importance": 1,
     "completed": true,
     "dueDate": "2024-05-21",
-    "createdDate": "2024-05-18",
-    "id": 26
+    "createdDate": "2024-05-18"
   },
   {
     "name": "Visit Schloss Rapperswil",
@@ -41,7 +37,6 @@
     "importance": 5,
     "completed": false,
     "dueDate": "2024-05-29",
-    "createdDate": "2024-05-21",
-    "id": 27
+    "createdDate": "2024-05-21"
   }
 ]

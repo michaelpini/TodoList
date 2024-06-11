@@ -1,13 +1,13 @@
 * {
     box-sizing: border-box;
     font-family: system-ui;
-    font-size: 16px;
 }
 
 :root {
     --btn-color: ghostwhite;
     --btn-background: linear-gradient(hsl(210deg 100% 50%), hsl(210deg 100% 42%));
     --chkbox-color: hsl(210deg 100% 42%);
+    --font-size: 16px;
 
     /* Theme light */
     --text-color: hsl(0deg 0% 17%);
@@ -39,6 +39,7 @@
 body {
     color: var(--text-color);
     background-color: var(--background-color);
+    font-size: var(--font-size);
 }
 
 button {
@@ -53,6 +54,7 @@ button {
     cursor: pointer;
     padding: 0.5rem;
     border: none;
+    font-size: inherit;
 }
 
 button + button {
@@ -208,6 +210,7 @@ select {
     grid-area: name;
     font-size: x-large;
     align-self: center;
+    font-weight: 500;
 }
 
 .grid-importance {
@@ -221,6 +224,10 @@ select {
     align-self: center;
 }
 
+.light {
+    font-style: italic;
+    opacity: 0.5;
+}
 .li-container {
     display: grid;
     grid-template:
@@ -312,7 +319,15 @@ select {
     width: 100%;
 }
 
+.x-large {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
 @media (max-width: 600px) {
+    :root {
+        --font-size: 17px;
+    }
     .sort-select {
         display: inline-block;
     }
