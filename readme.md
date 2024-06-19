@@ -14,14 +14,7 @@ Instructions:
 2. Start server: ```npm start```
 3. In browser goto http://localhost:3000 to open application
 
-
----
-# <mark>Open Items
-- [ ] Disable ``delete`` button for new item
-
-
----
-
+----------------------------------
 # A simple Todo List 
 
 The list contains simple todo items with a few properties:

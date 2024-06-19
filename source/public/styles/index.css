@@ -113,6 +113,7 @@ select {
     border: none;
     margin-right: 0.5rem;
     border-radius: 3px;
+    font-size: inherit;
 }
 
 [type="checkbox"] {
@@ -304,6 +305,11 @@ select {
 
 .hidden {
     display: none !important;
+}
+
+.info {
+    margin: auto;
+    color: var(--toolbar-btn-color);
 }
 
 .mb-1 {

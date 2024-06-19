@@ -3,10 +3,10 @@ import { TodoItem } from "../model/todo-item.js";
 import { dataService, persistenceService, spinner } from "./main-controller.js";
 import { Deferred } from "../services/util.js";
 
+const importanceLevels = [1, 2, 3, 4, 5];
 let formTemplateCompiled = null;
 let formData = null;
 let deferred = null;
-const importanceLevels = [1, 2, 3, 4, 5];
 
 // Event Handlers
 async function saveHandler() {
@@ -24,11 +24,11 @@ async function saveHandler() {
                 deferred.resolve('added successfully');
             }
         } catch {
-            alert("Error saving data");
+            alert('Error saving data');
         }
         spinner.close();
     } else {
-        alert("Data is missing - please fill in all required fields");
+        alert('Data is missing - please fill in all required fields');
     }
 }
 
@@ -47,7 +47,7 @@ function deleteHandler() {
                 deferred.resolve('delete successful');
             })
             .catch(() => {
-                alert("Error deleting data");
+                alert('Error deleting data');
             })
     }
 }
@@ -69,16 +69,16 @@ async function initForm() {
 }
 
 function initHandlebars() {
-    formTemplateCompiled = Handlebars.compile(document.querySelector("#form-template").innerHTML);
+    formTemplateCompiled = Handlebars.compile(document.querySelector('#form-template').innerHTML);
 }
 
 function getFormData() {
     const newData = { ...formData };
-    newData.name = document.querySelector("input[name=\"name\"]").value;
-    newData.description = document.querySelector("textarea[name=\"description\"]").value;
-    newData.importance = +document.querySelector("input[name=\"importance\"]").value;
-    newData.dueDate = document.querySelector("input[name=\"dueDate\"]").value;
-    newData.completed = document.querySelector("input[name=\"completed\"]").checked;
+    newData.name = document.querySelector('input[name="name"]').value;
+    newData.description = document.querySelector('textarea[name="description"]').value;
+    newData.importance = +document.querySelector('input[name="importance"]').value;
+    newData.dueDate = document.querySelector('input[name="dueDate"]').value;
+    newData.completed = document.querySelector('input[name="completed"]').checked;
     return newData;
 }
 
@@ -100,11 +100,12 @@ async function show(id) {
     formData = dataService.getById(id) || new TodoItem();
     deferred = new Deferred();
     renderForm(formData);
+    document.querySelector('button[name="btnDelete"]').classList.toggle('hidden', !id);
     return deferred.promise;
 }
 
 function renderForm(data) {
-    document.querySelector("#form-parent").innerHTML = formTemplateCompiled(data, {data: {levels: importanceLevels}});
+    document.querySelector('#form-parent').innerHTML = formTemplateCompiled(data, {data: {levels: importanceLevels}});
 }
 
 export { show, initForm };

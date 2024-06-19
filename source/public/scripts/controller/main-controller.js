@@ -145,6 +145,14 @@ function setView(view = 'list') {
 function renderList(data = null) {
     document.querySelector("#toolbar-parent").innerHTML = navTemplateCompiled(displayOptions);
     document.querySelector("#list-parent").innerHTML = listTemplateCompiled(data);
+    updateInfo(data?.length || 0);
+}
+
+function updateInfo(filtered) {
+    const total = dataService.getCount();
+    let info = total + (total === 1 ? ' item' : ' items');
+    if (filtered < total) info = `${filtered} of ${info}`;
+    document.querySelector("#Info").innerText = info;
 }
 
 /**
