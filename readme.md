@@ -6,7 +6,7 @@ External libraries:
 - luxon.js       (date / time handling)
 - idb.js         (utility for indexed db handling - local storage)
 
-Backend API:     express.js
+Backend API:     express.js (node.js)
 Persistence:     NeDB  (Alternatively the browsers IndexedDB storage)
 ```
 Instructions:  
