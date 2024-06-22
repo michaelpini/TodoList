@@ -8,8 +8,15 @@ const urlUpdateItem = `${urlApi}/:id`;
 const urlDeleteItem = `${urlApi}/:id`;
 
 /**
- * Server service using AJAX requests connecting to express server <br>
+ * Server service using AJAX requests connecting to express.js server <br>
  * Singleton class, instantiating only once
+ * | URL | Method | Description |
+ * |-------------------|--------|--------------------|
+ * | ``/api/``      | GET    | Get all items         |
+ * | ``/api/:id``   | GET    | Get one item by id    |
+ * | ``/api/``      | POST   | Add one item by id    |
+ * | ``/api/:id``   | PUT    | Update one item       |
+ * | ``/api/:id``   | DELETE | Delete one item by id |
  * @example
  * const persistenceService = new ServerService();
  */

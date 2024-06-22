@@ -4,7 +4,6 @@ class DataService {
     static #instance = null;
     #data = [];
 
-
     /**
      * Data service singleton class, used for data management on front end
      * @returns {DataService} Singleton data service class
@@ -100,7 +99,5 @@ class DataService {
         return this.#data.length;
     }
 }
-
-
 
 export { DataService }

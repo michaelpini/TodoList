@@ -6,13 +6,24 @@ External libraries:
 - luxon.js       (date / time handling)
 - idb.js         (utility for indexed db handling - local storage)
 
-Backend API:     express.js (node.js)
+Backend API:     express.js
 Persistence:     NeDB  (Alternatively the browsers IndexedDB storage)
 ```
-Instructions:  
+<br>
+
+### Instructions:  
 1. Install dependencies: ```npm install```
 2. Start server: ```npm start```
 3. In browser goto http://localhost:3000 to open application
+
+4. To use IndexedDB instead of NeDB:  
+``main-controller.js`` Set switch block to 'localdb' (line 11):
+```
+switch ('localdb') {
+    case 'server': persistenceService = new ServerService(); break;
+    case 'localdb': persistenceService = new LocalDbService(); break;
+}
+```
 
 ----------------------------------
 # A simple Todo List 
