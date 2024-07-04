@@ -1,6 +1,6 @@
 {
   "name": "cas-fee-projekt-1-todo-list",
-  "version": "1.0.0",
+  "version": "abgabe",
   "description": "A simple todo list using vanilla JS",
   "main": "public/scripts/main.js",
   "type": "module",

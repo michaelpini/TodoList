@@ -23,8 +23,16 @@ const urlDeleteItem = `${urlApi}/:id`;
 class ServerService {
     static #instance = null;
 
-    constructor() {
+    /**
+     * Get singleton instance of ServerService
+     * @returns {ServerService}
+     */
+    static getInstance() {
         if (ServerService.#instance) return ServerService.#instance;
+        return new ServerService();
+    }
+
+    constructor() {
         ServerService.#instance = this;
     }
 

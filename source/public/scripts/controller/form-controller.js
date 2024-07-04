@@ -84,6 +84,7 @@ function getFormData() {
 
 function isDirty() {
     const newData = getFormData();
+    // eslint-disable-next-line no-restricted-syntax
     for (const key of Object.keys(newData)) {
         if (newData[key] !== formData[key]) return true;
     }

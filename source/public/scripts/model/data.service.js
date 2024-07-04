@@ -5,11 +5,19 @@ class DataService {
     #data = [];
 
     /**
+     * Get singleton instance of DataService
+     * @returns {DataService}
+     */
+    static getInstance() {
+        if (DataService.#instance) return DataService.#instance;
+        return new DataService();
+    }
+
+    /**
      * Data service singleton class, used for data management on front end
      * @returns {DataService} Singleton data service class
      */
     constructor() {
-        if (DataService.#instance) return DataService.#instance;
         DataService.#instance = this;
     }
 

@@ -6,11 +6,11 @@ import { initForm, show } from "./form-controller.js";
 import { ServerService } from "../services/server.service.js";
 import { LocalDbService } from "../services/local-db.service.js";
 
-let dataService = new DataService();
+let dataService = DataService.getInstance();
 let persistenceService;
 switch ('server') {
-    case 'server': persistenceService = new ServerService(); break;
-    case 'localdb': persistenceService = new LocalDbService(); break;
+    case 'server': persistenceService = ServerService.getInstance(); break;
+    case 'localdb': persistenceService = LocalDbService.getInstance(); break;
 }
 const spinner = document.querySelector('#spinner');
 const displayOptions = {

@@ -11,8 +11,16 @@ class LocalDbService {
     static #instance = null;
     #db = null;
 
-    constructor() {
+    /**
+     * Get singleton instance of LocalDbService
+     * @returns {LocalDbService}
+     */
+    static getInstance() {
         if (LocalDbService.#instance) return LocalDbService.#instance;
+        return new LocalDbService();
+    }
+
+    constructor() {
         LocalDbService.#instance = this;
         this.#init();
     }
