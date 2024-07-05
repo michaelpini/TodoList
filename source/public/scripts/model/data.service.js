@@ -1,8 +1,17 @@
 import { sortObjectArray } from "../services/util.js";
 
+/**
+ * Data service , used for data management on front end client <br>
+ * Use ``getInstance()`` to instantiate service
+ * @example
+ * const dataService = DataService.getInstance();    //   */
 class DataService {
     static #instance = null;
     #data = [];
+
+    constructor() {
+        DataService.#instance = this;
+    }
 
     /**
      * Get singleton instance of DataService
@@ -11,14 +20,6 @@ class DataService {
     static getInstance() {
         if (DataService.#instance) return DataService.#instance;
         return new DataService();
-    }
-
-    /**
-     * Data service singleton class, used for data management on front end
-     * @returns {DataService} Singleton data service class
-     */
-    constructor() {
-        DataService.#instance = this;
     }
 
     /**

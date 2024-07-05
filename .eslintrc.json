@@ -23,5 +23,5 @@
     "no-use-before-define": "off",
     "lines-between-class-members": "off"
   },
-  "ignorePatterns": ["source/public/ext-modules/**/*"]
+  "ignorePatterns": ["source/public/libraries/**/*"]
 }

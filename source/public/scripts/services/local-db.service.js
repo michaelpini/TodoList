@@ -1,15 +1,21 @@
 import { openDB } from "../../libraries/idb.js";
 
 /**
- * Local database service, using the browsers ``IndexedDB`` feature to store data locally. ⚠️ Data will be lost after clearing cache! <br>
+ * Local database service, using the browsers ``IndexedDB`` feature to store data locally. <br>
+ * ⚠️ Data will be lost after clearing cache! <br>
  * Using idb library (https://www.npmjs.com/package/idb) for easier syntax <br>
- * Singleton class, instantiates only once
+ * Use ``getInstance()`` to instantiate service
  * @example
- * const persistenceService = new LocalDBService(); // Singleton
+ * const persistenceService = LocalDBService.getInstance();    //
  */
 class LocalDbService {
     static #instance = null;
     #db = null;
+
+    constructor() {
+        LocalDbService.#instance = this;
+        this.#init();
+    }
 
     /**
      * Get singleton instance of LocalDbService
@@ -18,11 +24,6 @@ class LocalDbService {
     static getInstance() {
         if (LocalDbService.#instance) return LocalDbService.#instance;
         return new LocalDbService();
-    }
-
-    constructor() {
-        LocalDbService.#instance = this;
-        this.#init();
     }
 
     /**

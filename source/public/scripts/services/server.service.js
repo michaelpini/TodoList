@@ -9,16 +9,16 @@ const urlDeleteItem = `${urlApi}/:id`;
 
 /**
  * Server service using AJAX requests connecting to express.js server <br>
- * Singleton class, instantiating only once
- * | URL | Method | Description |
- * |-------------------|--------|--------------------|
- * | ``/api/``      | GET    | Get all items         |
- * | ``/api/:id``   | GET    | Get one item by id    |
- * | ``/api/``      | POST   | Add one item by id    |
- * | ``/api/:id``   | PUT    | Update one item       |
- * | ``/api/:id``   | DELETE | Delete one item by id |
+ * Use ``getInstance()`` to instantiate
+ * | --- API  URL --- | Method | Description            |
+ * |------------------|--------|------------------------|
+ * | ``/api/``        | GET    | Get all items          |
+ * | ``/api/:id``     | GET    | Get one item by id     |
+ * | ``/api/``        | POST   | Add one item           |
+ * | ``/api/:id``     | PATCH  | Update one item  by id |
+ * | ``/api/:id``     | DELETE | Delete one item by id  |
  * @example
- * const persistenceService = new ServerService();
+ * const persistenceService = ServerService.getInstance();
  */
 class ServerService {
     static #instance = null;
@@ -64,7 +64,7 @@ class ServerService {
     async save(item) {
         const {id} = item;
         const url = id ? urlUpdateItem.replace(':id', id) : urlAddItem;
-        const method = id ? 'PUT' : 'POST';
+        const method = id ? 'PATCH' : 'POST';
         return this.#ajax(method, url, item);
     }
 
@@ -103,11 +103,13 @@ class ServerService {
      * - resolves with json object, if ok (status 200...399)
      * - rejects with Error otherwise
      * ```
-     * @param method {'GET'|'PUT'|'POST'|'DELETE'} HTTP method (e.g. 'GET')
+     * @param method {'GET'|'PATCH'|'POST'|'DELETE'} HTTP method (e.g. 'GET')
      * @param url {string} api URL (e.g. '/api/:id
      * @param data {json} payload object (e.g. TodoItem)
      * @returns {Promise<json>} Promise -> response object (e.g. TodoItem)
      */
+    // pure sub function only used in this class -> not using this:
+    // eslint-disable-next-line class-methods-use-this
     async #ajax(method, url, data = undefined) {
         const options = {
             method,
@@ -126,5 +128,3 @@ class ServerService {
 }
 
 export { ServerService }
-
-
