@@ -53,6 +53,12 @@
         <div class="spinner"></div>
         <div class="spinner-text">Loading data...</div>
     </dialog>
+
+    <!-- answer dialog -->
+    <dialog id="dialog">
+        <!-- HANDLEBARS Dialog Slot-->
+        Initialize dialog pending...
+    </dialog>
 </div>
 
 <!-- --------------------------------------------------- -->
@@ -148,6 +154,20 @@
     </div>
 </script>
 
+<!--Dialog template for Handlebars, will be rendered in id="dialog" -->
+<script id="dialog-template" type="text/x-handlebars-template">
+    <div class="dialog-container">
+        <div class="flex items-center">
+            {{#if iconSrc}}<img src="{{iconSrc}}" height=48 width=48 alt="dialog type icon" class="mr-1"/>{{/if}}
+            <div class="font-large">{{title}}</div>
+        </div>
+        <p class="mb-1 multi-line">{{{msg}}}</p>
+        <div class="flex align-right">
+            {{#if btnOk}}<button id="dialogOk" class="btn-action">{{btnOk}}</button>{{/if}}
+            <button id="dialogCancel" class="btn-toolbar">{{btnCancel}}</button>
+        </div>
+    </div>
+</script>
+
 </body>
 </html>
-

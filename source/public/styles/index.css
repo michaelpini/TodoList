@@ -40,6 +40,7 @@ body {
     color: var(--text-color);
     background-color: var(--background-color);
     font-size: var(--font-size);
+    margin: 0;
 }
 
 button {
@@ -69,7 +70,7 @@ dialog {
 }
 
 dialog::backdrop {
-    background: linear-gradient(hsl(0deg 0% 10% / 20%), hsl(0deg 0% 90% / 20%));
+    background: linear-gradient(hsl(0deg 0% 10% / 40%), hsl(0deg 0% 50% / 40%));
 }
 
 form {
@@ -177,10 +178,22 @@ select {
     width: 100%;
     min-width: 20rem;
     max-width: 50rem;
-    height: calc(100vh - 16px);
+    height: 100vh;
     margin: 0 auto;
 }
 
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    background: var(--background-color);
+    padding: 1rem;
+    border-radius: 6px;
+    min-width: 40vw;
+}
+
+.font-large {
+    font-size: 1.5rem;
+}
 .navbar,
 .toolbar {
     display: flex;
@@ -223,6 +236,10 @@ select {
 .grid-status {
     grid-area: status;
     align-self: center;
+}
+
+.items-center {
+    align-items: center;
 }
 
 .light {
@@ -314,6 +331,14 @@ select {
 
 .mb-1 {
     margin-bottom: 0.8rem;
+}
+
+.mr-1 {
+    margin-right: 0.8rem;
+}
+
+.multi-line {
+    white-space: pre-wrap;
 }
 
 .row {

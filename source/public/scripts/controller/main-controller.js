@@ -5,6 +5,7 @@ import { DateTime } from "../../libraries/luxon.js";
 import { initForm, show } from "./form-controller.js";
 import { ServerService } from "../services/server.service.js";
 import { LocalDbService } from "../services/local-db.service.js";
+import { Deferred } from "../services/util.js";
 
 let dataService = DataService.getInstance();
 let persistenceService;
@@ -13,6 +14,7 @@ switch ('server') {
     case 'localdb': persistenceService = LocalDbService.getInstance(); break;
 }
 const spinner = document.querySelector('#spinner');
+const dialog = document.querySelector('#dialog');
 const displayOptions = {
     show: 'list',
     sortBy: 'name',
@@ -22,8 +24,10 @@ const displayOptions = {
 }
 let navTemplateCompiled = null;
 let listTemplateCompiled = null;
+let dialogTemplateCompiled = null;
 let svgAsc = null;
 let svgDesc = null;
+let dialogDeferred = null;
 
 // Event Handlers
 function addEventListeners() {
@@ -31,6 +35,7 @@ function addEventListeners() {
     document.querySelector('#toolbar-parent').addEventListener('click', toolbarClickHandler);
     document.querySelector('#toolbar-parent').addEventListener('change', toolbarSelectHandler);
     document.querySelector('#list-parent').addEventListener('click', listItemClickHandler);
+    document.querySelector('#dialog').addEventListener('click', dialogClickHandler);
 }
 
 function navBarClickHandler(ev) {
@@ -71,6 +76,15 @@ function listItemClickHandler(ev) {
     if (id) showForm(id);
 }
 
+function dialogClickHandler(ev) {
+    dialog.close();
+    if (ev.target.id === 'dialogOk') {
+        dialogDeferred.resolve();
+    } else if (ev.target.id === 'dialogCancel') {
+        dialogDeferred.reject();
+    }
+}
+
 function renderSortedFiltered() {
     let data = dataService.getSortedFiltered(
         displayOptions.sortBy, displayOptions.sortMode, displayOptions.filterOpen && 'open');
@@ -107,6 +121,7 @@ function initHandlebars() {
     Handlebars.registerHelper('hbAddAttribute', (attr, condition) => condition ? attr : '');
     navTemplateCompiled = Handlebars.compile(document.querySelector('#nav-template').innerHTML);
     listTemplateCompiled = Handlebars.compile(document.querySelector('#list-template').innerHTML);
+    dialogTemplateCompiled = Handlebars.compile(document.querySelector('#dialog-template').innerHTML);
 }
 
 async function loadIcons() {
@@ -195,5 +210,35 @@ function showForm(id) {
         .finally(() => setView('list'))
 }
 
-export { dataService, initialize, persistenceService, spinner };
+async function showDialog(param = {}) {
+    const defaultParam = {
+        msg: 'Information',
+        title: 'Info',
+        icon: 'info',
+        btnOk: 'OK',
+        btnCancel: 'Cancel',
+        iconSrc: '',
+    }
+    const paramUpdated = Object.assign(defaultParam, param);
+    dialogDeferred = new Deferred();
+    switch (paramUpdated.icon) {
+        case 'info':
+            paramUpdated.iconSrc = './icons/info_64_blue.png';
+            break;
+        case 'question':
+            paramUpdated.iconSrc = './icons/help_64_blue.png';
+            break;
+        case 'warning':
+            paramUpdated.iconSrc = './icons/warning_64_yellow.png';
+            break;
+        case 'error':
+            paramUpdated.iconSrc = './icons/warning_64_red.png';
+            break;
+    }
+    dialog.innerHTML = dialogTemplateCompiled(paramUpdated);
+    dialog.showModal();
+    return dialogDeferred.promise;
+}
+
+export { dataService, initialize, persistenceService, showDialog, spinner };
 

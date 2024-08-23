@@ -1,6 +1,6 @@
 /* global Handlebars */
 import { TodoItem } from "../model/todo-item.js";
-import { dataService, persistenceService, spinner } from "./main-controller.js";
+import { dataService, persistenceService, showDialog, spinner } from "./main-controller.js";
 import { Deferred } from "../services/util.js";
 
 const importanceLevels = [1, 2, 3, 4, 5];
@@ -24,32 +24,67 @@ async function saveHandler() {
                 deferred.resolve('added successfully');
             }
         } catch {
-            alert('Error saving data');
+            await showDialog({
+                title: 'Error',
+                icon: 'error',
+                msg: 'Error saving data',
+                btnOk: '',
+                btnCancel: 'Close',
+            })
         }
         spinner.close();
     } else {
-        alert('Data is missing - please fill in all required fields');
+        await showDialog({
+            msg: 'Please fill in all required fields',
+            title: 'Data is missing',
+            icon: 'warning',
+            btnOk: '',
+            btnCancel: 'Close'
+        })
     }
 }
 
 function cancelHandler() {
-    if (!isDirty() || confirm('Discard changes and close?')) {
+    if (isDirty()) {
+        showDialog({
+            msg: 'Discard changes and close?',
+            title: 'Unsaved changes',
+            icon: 'question',
+            btnOk: 'Discard'
+        }).then(() => {
+            deferred.reject('user cancelled');
+        })
+    } else {
         deferred.reject('user cancelled');
     }
 }
 
 function deleteHandler() {
     const data = getFormData();
-    if (confirm(`Are you sure you want to delete item "${data.name}"? \n⚠️ Caution: no undo!`)) {
+    showDialog({
+        msg: `Are you sure you want to delete item "${data.name}"? \n⚠️ Caution: no undo!`,
+        title: 'Delete item',
+        icon: 'question',
+        btnOk: 'Delete',
+    }).then(() => {
         persistenceService.delete(data.id)
             .then(() => {
                 dataService.delete(data.id);
                 deferred.resolve('delete successful');
             })
             .catch(() => {
-                alert('Error deleting data');
+                showDialog({
+                    title: 'Error',
+                    icon: 'error',
+                    msg: 'Error deleting data',
+                    btnOk: '',
+                    btnCancel: 'Close',
+                })
+
             })
-    }
+
+        }
+    );
 }
 
 function addEventListeners() {
